@@ -1,14 +1,8 @@
-{# =========================
-  market_wrap_l1.md.j2
-  Layer-1: deterministic outcomes + attributed event timeline + evidence pointers
-  No commentary, no causality, no “drivers”.
-========================= #}
-
 {% set g = day.governance %}
 ---
 doc_type: market_wrap_l1
-doc_id: {{ g.doc_id | default("mw_" ~ (g.region|lower) ~ "_" ~ g.date) }}
-doc_key: {{ g.doc_key | default("market_wrap/" ~ (g.region|lower) ~ "/" ~ g.date) }}
+doc_id: {{ g.doc_id | default("mw_" ~ g.region|lower ~ "_" ~ g.date) }}
+doc_key: {{ g.doc_key | default("market_wrap/" ~ g.region|lower ~ "/" ~ g.date) }}
 doc_version: {{ g.doc_version }}
 is_current: {{ "true" if (g.is_current | default(true)) else "false" }}
 is_active: {{ "true" if (g.is_active | default(true)) else "false" }}
@@ -22,7 +16,7 @@ license_policy: {{ g.license_policy }}
 market_data_vendor: {{ g.market_data_vendor }}
 market_data_version: {{ g.market_data_version }}
 calc_versions:
-{% for v in (g.calc_versions | default([])) %}
+{% for v in g.calc_versions %}
   - {{ v }}
 {% endfor %}
 pipeline_version: {{ g.pipeline_version }}
@@ -44,11 +38,11 @@ sources_used:
 <!-- chunk_id: wrap_summary -->
 ## 1) Executive Fact Summary
 
-### 1.1 Headline (Neutral)
+### 1.1 Headline
 {{ day.market_outcomes.headline_neutral }}
 
 ### 1.2 Index / Benchmark Closes
-{% for idx in (day.market_outcomes.indices | default([])) %}
+{% for idx in day.market_outcomes.indices %}
 - **{{ idx.symbol }}**: {{ "%.2f"|format(idx.close) }} ({{ "%+.2f"|format(idx.return_pct) }}%)
 {% if idx.low is defined and idx.high is defined %}
   - Range: {{ "%.2f"|format(idx.low) }} – {{ "%.2f"|format(idx.high) }}
@@ -56,32 +50,27 @@ sources_used:
 {% endfor %}
 
 ### 1.3 Rates / FX / Commodities
-{% set rfc = day.market_outcomes.rates_fx_commodities | default([]) %}
-{% if rfc|length == 0 %}
+{% if day.market_outcomes.rates_fx_commodities|length == 0 %}
 - (none)
 {% else %}
-{% for r in rfc %}
-- **{{ r.symbol }}**: {{ r.value }}
-{% if r.unit == "pct" %}%{% elif r.unit == "bps" %} bps{% elif r.unit == "usd" %} USD{% elif r.unit == "index" %}{% elif r.unit == "ratio" %}{% endif %}
+{% for r in day.market_outcomes.rates_fx_commodities %}
+- **{{ r.symbol }}**: {{ r.value }}{% if r.unit == "pct" %}%{% elif r.unit == "bps" %} bps{% elif r.unit == "usd" %} USD{% elif r.unit == "index" %}{% elif r.unit == "ratio" %}{% endif %}
 {% if r.change_bps is defined %}
   - Change: {{ "%+g"|format(r.change_bps) }} bps
-{% elif r.change_pct is defined %}
-  - Change: {{ "%+g"|format(r.change_pct) }}%
+{% elif r.symbol == "EURUSD" and r.change_abs is defined and r.change_pct is defined %}
+  - Change: {{ "%+g"|format(r.change_abs) }} ({{ "%+g"|format(r.change_pct) }}%)
 {% elif r.change_abs is defined %}
   - Change: {{ "%+g"|format(r.change_abs) }}
+{% elif r.change_pct is defined %}
+  - Change: {{ "%+g"|format(r.change_pct) }}%
 {% elif r.change is defined %}
-  {# backward-compat: interpret 'change' based on unit #}
-  {% if r.unit == "pct" %}
-  - Change: {{ "%+g"|format(r.change) }} bps
-  {% else %}
   - Change: {{ "%+g"|format(r.change) }}
-  {% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
 
 ### 1.4 Volatility
-{% for v in (day.market_outcomes.volatility | default([])) %}
+{% for v in day.market_outcomes.volatility %}
 - **{{ v.symbol }}**: {{ "%.2f"|format(v.close) }}
 {% if v.change_pts is defined %}
   - Change: {{ "%+.2f"|format(v.change_pts) }} pts
@@ -91,23 +80,22 @@ sources_used:
 {% endfor %}
 
 ### 1.5 Breadth
-{% set b = day.market_outcomes.breadth | default({}) %}
-- Advancers: {{ b.advancers }}
-- Decliners: {{ b.decliners }}
-{% if b.pct_above_200dma is defined %}
-- % above 200DMA: {{ "%.1f"|format(b.pct_above_200dma) }}%
+- Advancers: {{ day.market_outcomes.breadth.advancers }}
+- Decliners: {{ day.market_outcomes.breadth.decliners }}
+{% if day.market_outcomes.breadth.pct_above_200dma is defined %}
+- % above 200DMA: {{ "%.1f"|format(day.market_outcomes.breadth.pct_above_200dma) }}%
 {% endif %}
 
 <!-- chunk_id: wrap_timeline -->
 ## 2) Session Timeline (Attributed Events)
 
-{% for e in (day.events | default([]) | sort(attribute="published_ts")) %}
+{% for e in (day.events | sort(attribute="published_ts")) %}
 ### {{ e.published_ts }} — {{ e.event_type }}
 - **Event ID**: {{ e.event_id }}
 - **Session**: {{ e.market_session }}
-- **Entities**: {{ (e.entities | default([])) | join(", ") }}
+- **Entities**: {{ e.entities | join(", ") }}
 - **Facts**:
-{% for f in (e.facts | default([])) %}
+{% for f in e.facts %}
   - {{ f }}
 {% endfor %}
 - **Source**: {{ e.source.name }} ({{ e.source.source_type }})
@@ -120,32 +108,35 @@ sources_used:
 
 ### 3.1 Reaction Windows (grouped by event_id)
 
-{# Constraints: keep this readable and enforce determinism downstream via validation #}
 {% set core = ["SPX","NDX","DJIA","RUT","VIX"] %}
 {% set allowed_windows = ["t0_to_t+5m","t0_to_t+30m","t0_to_t+60m","t0_to_close","pre_to_close"] %}
+{% set max_extras = 8 %}
 
-{% for e in (day.events | default([]) | sort(attribute="published_ts")) %}
-{% set eid = e.event_id %}
-#### Event {{ eid }} ({{ e.event_type }} at {{ e.published_ts }})
+{% for e in (day.events | sort(attribute="published_ts")) %}
+#### Event {{ e.event_id }}
 
-{# Core instruments first #}
-{% for w in allowed_windows %}
-{% for rw in (day.reaction_windows | default([])) if rw.event_id == eid and rw.window == w and rw.instrument in core %}
+{% set rows = (day.reaction_windows | selectattr("event_id","equalto",e.event_id) | list) %}
+
+{% set core_rows = rows | selectattr("instrument","in",core) | selectattr("window","in",allowed_windows) | list %}
+{% set extra_rows = rows | rejectattr("instrument","in",core) | selectattr("window","in",allowed_windows) | list %}
+
+{% if core_rows|length == 0 and extra_rows|length == 0 %}
+- (no reaction windows recorded)
+{% else %}
+
+**Core instruments**
+{% for rw in core_rows %}
 - **{{ rw.instrument }}** — Window {{ rw.window }}: {{ "%+.3f"|format(rw.move_pct) }}%
 {% endfor %}
-{% endfor %}
 
-{# Then a capped set of non-core instruments #}
-{% set extras = (day.reaction_windows | default([]) | selectattr("event_id","equalto",eid) | list) %}
-{% set printed = 0 %}
-{% for rw in extras %}
-{% if rw.instrument not in core and rw.window in allowed_windows %}
-{% if printed < 8 %}
+{% if extra_rows|length > 0 %}
+**Additional instruments (capped)**
+{% for rw in extra_rows[:max_extras] %}
 - **{{ rw.instrument }}** — Window {{ rw.window }}: {{ "%+.3f"|format(rw.move_pct) }}%
-{% set printed = printed + 1 %}
-{% endif %}
-{% endif %}
 {% endfor %}
+{% endif %}
+
+{% endif %}
 
 {% endfor %}
 
@@ -154,26 +145,26 @@ sources_used:
 
 ### 4.1 Top Movers
 **Top Gainers**
-{% for m in (day.movers.top_gainers | default([])) %}
-- {{ m.symbol }}: {{ "%+.2f"|format(m.return_pct) }}% ({{ "%.2f"|format(m.volume_multiple) }}× avg volume){% if m.sector is defined %} — {{ m.sector }}{% endif %}
+{% for m in day.movers.top_gainers %}
+- {{ m.symbol }}: {{ "%+.2f"|format(m.return_pct) }}% ({{ m.volume_multiple }}× avg volume) — {{ m.sector }}
 {% endfor %}
 
 **Top Decliners**
-{% for m in (day.movers.top_decliners | default([])) %}
-- {{ m.symbol }}: {{ "%+.2f"|format(m.return_pct) }}% ({{ "%.2f"|format(m.volume_multiple) }}× avg volume){% if m.sector is defined %} — {{ m.sector }}{% endif %}
+{% for m in day.movers.top_decliners %}
+- {{ m.symbol }}: {{ "%+.2f"|format(m.return_pct) }}% ({{ m.volume_multiple }}× avg volume) — {{ m.sector }}
 {% endfor %}
 
 ### 4.2 Sector Performance
 | Sector | Return | Volume Multiple |
 |---|---:|---:|
-{% for s in (day.sectors | default([])) %}
+{% for s in day.sectors %}
 | {{ s.name }} | {{ "%+.2f"|format(s.return_pct) }}% | {{ "%.2f"|format(s.volume_multiple) }}× |
 {% endfor %}
 
 <!-- chunk_id: wrap_ticker_panels -->
 ## 5) Company Fact Panels
 
-{% for t in (day.tickers | default([])) %}
+{% for t in day.tickers %}
 ### {{ t.symbol }}
 - **Close**: {{ "%.2f"|format(t.close) }} ({{ "%+.2f"|format(t.return_pct) }}%)
 - **Volume**: {{ "%.2f"|format(t.volume_multiple) }}× avg
@@ -190,14 +181,18 @@ sources_used:
 
 ```yaml
 evidence_items:
-{% for ev in (day.evidence_items | default([])) %}
+{% for ev in day.evidence_items %}
   - event_id: {{ ev.event_id }}
     source_name: {{ ev.source_name }}
     source_type: {{ ev.source_type }}
     published_ts: {{ ev.published_ts }}
     canonical_url: "{{ ev.canonical_url }}"
-    excerpt: "{{ (ev.excerpt | replace('\\\\', '\\\\\\') | replace('\"', '\\\"') | replace('\\n', ' ') ) }}"
+    excerpt: "{{ (ev.excerpt
+      | replace('\\\\', '\\\\\\')
+      | replace('\"', '\\\"')
+      | replace('\\n', ' ')
+      | truncate(280, True, '…')
+    ) }}"
     doc_id: {{ ev.doc_id }}
     chunk_id: {{ ev.chunk_id }}
 {% endfor %}
-

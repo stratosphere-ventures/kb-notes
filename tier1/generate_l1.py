@@ -13,6 +13,7 @@ Improvements:
 import json
 import uuid
 import random
+import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 import argparse
@@ -226,9 +227,34 @@ def stable_int_seed(*parts: str) -> int:
     return int(h[:8], 16)
 
 
+def _short_hash(s: str, n: int = 8) -> str:
+    """Generate short hash suffix for stable, unique IDs."""
+    return hashlib.sha1(s.encode("utf-8")).hexdigest()[:n]
+
+
 def calculate_future_date(date_str: str, days: int) -> str:
     d = datetime.strptime(date_str, "%Y-%m-%d")
     return (d + timedelta(days=days)).strftime("%Y-%m-%d")
+
+
+# -----------------------------
+# Text sanitization (L1-neutral, fact-only)
+# -----------------------------
+FORBIDDEN = ["should", "could", "may", "likely", "expected", "forecast", "outlook", "because", "due to", "driven by"]
+
+
+def sanitize_l1_text(s: str) -> str:
+    s2 = s or ""
+    low = s2.lower()
+    for tok in FORBIDDEN:
+        if tok in low:
+            # blunt but effective for Tier-1 synthetic
+            s2 = re.sub(rf"\b{re.escape(tok)}\b", "reported", s2, flags=re.IGNORECASE)
+            low = s2.lower()
+    # strip interpretive connectors
+    s2 = re.sub(r"\b(investors|sentiment|relief|concerns)\b", "", s2, flags=re.IGNORECASE)
+    s2 = re.sub(r"\s{2,}", " ", s2).strip()
+    return s2
 
 
 # -----------------------------
@@ -374,7 +400,7 @@ def generate_market_outcomes(
     dec = rng.randint(1500, 3500)
     pct_above_200 = round(clamp(50 + spx_ret * 5 + rng.uniform(-5, 5), 30, 80), 1)
 
-    headline = (
+    headline = sanitize_l1_text(
         f"US equities: SPX {spx_ret:+.2f}%, NDX {ndx_ret:+.2f}%, "
         f"DJIA {djia_ret:+.2f}%, RUT {rut_ret:+.2f}%."
     )
@@ -443,9 +469,13 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
                 ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "NVDA", "TSLA", "JPM"]
             )
             cik = get_cik(co)
+            eps_actual = rng.uniform(1.5, 6.0)
+            eps_prior = rng.uniform(1.5, 6.0)
+            rev_actual = rng.uniform(15, 60)
+            rev_prior = rng.uniform(15, 60)
             facts = [
-                f"EPS: ${rng.uniform(1.5, 6.0):.2f} vs ${rng.uniform(1.5, 6.0):.2f} expected",
-                f"Revenue: ${rng.uniform(15, 60):.1f}B vs ${rng.uniform(15, 60):.1f}B expected",
+                sanitize_l1_text(f"{co} reported EPS: ${eps_actual:.2f} (prior: ${eps_prior:.2f})"),
+                sanitize_l1_text(f"{co} reported Revenue: ${rev_actual:.1f}B (prior: ${rev_prior:.1f}B)"),
             ]
             source = {
                 "name": co,
@@ -472,8 +502,8 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
             )
             cik = get_cik(co)
             facts = [
-                f"{co} announced a corporate action filing.",
-                f"Record date: {calculate_future_date(date, 18)}",
+                sanitize_l1_text(f"{co} announced a corporate action filing."),
+                sanitize_l1_text(f"Record date: {calculate_future_date(date, 18)}"),
             ]
             source = {
                 "name": "SEC",
@@ -494,8 +524,32 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
             )
             continue
 
-        # Generic fact-only stub for other event types
-        facts = [f"{et} event recorded for {date}."]
+        # Structured facts for other event types
+        if et == "economic_release":
+            release_type = rng.choice(["CPI YoY", "ISM Manufacturing PMI", "Nonfarm Payrolls", "PPI YoY"])
+            if "CPI" in release_type:
+                value = round(rng.uniform(2.5, 3.5), 1)
+                prior = round(value + rng.uniform(-0.3, 0.3), 1)
+                facts = [sanitize_l1_text(f"BLS released {release_type}: {value}% (prior: {prior}%)")]
+            elif "PMI" in release_type:
+                value = round(rng.uniform(48.0, 54.0), 1)
+                prior = round(value + rng.uniform(-1.5, 1.5), 1)
+                facts = [sanitize_l1_text(f"ISM released {release_type}: {value} (prior: {prior})")]
+            else:
+                value = rng.randint(150, 250)
+                prior = value + rng.randint(-30, 30)
+                facts = [sanitize_l1_text(f"BLS released {release_type}: {value}K (prior: {prior}K)")]
+        elif et == "treasury_auction":
+            maturity = rng.choice(["10Y", "30Y", "2Y"])
+            stop_out = round(rng.uniform(4.0, 4.5), 2)
+            bid_cover = round(rng.uniform(2.3, 2.7), 2)
+            facts = [sanitize_l1_text(f"Treasury auction {maturity}: stop-out {stop_out}%, bid-to-cover {bid_cover}")]
+        elif et == "fed_speech":
+            speaker = rng.choice(["Chair", "Vice Chair", "Regional President"])
+            topic = rng.choice(["monetary policy", "economic outlook", "inflation target"])
+            facts = [sanitize_l1_text(f"Fed {speaker} delivered speech on {topic}.")]
+        else:
+            facts = [sanitize_l1_text(f"{et} event recorded for {date}.")]
         source = {
             "name": "SyntheticWire",
             "source_type": "news_wire_synthetic",
@@ -595,6 +649,11 @@ def generate_sectors(
 
 def generate_movers(tickers: List[Dict[str, Any]]) -> Dict[str, Any]:
     sorted_t = sorted(tickers, key=lambda x: x["return_pct"], reverse=True)
+    
+    # Only include positive returns for gainers, negative for decliners
+    gainers = [t for t in sorted_t if t["return_pct"] > 0]
+    decliners = [t for t in sorted_t if t["return_pct"] < 0]
+    
     top_g = [
         {
             "symbol": t["symbol"],
@@ -602,7 +661,7 @@ def generate_movers(tickers: List[Dict[str, Any]]) -> Dict[str, Any]:
             "sector": SECTOR_MAP.get(t["symbol"], "Unknown"),
             "volume_multiple": t["volume_multiple"],
         }
-        for t in sorted_t[:5]
+        for t in gainers[:5]
     ]
     top_d = [
         {
@@ -611,8 +670,12 @@ def generate_movers(tickers: List[Dict[str, Any]]) -> Dict[str, Any]:
             "sector": SECTOR_MAP.get(t["symbol"], "Unknown"),
             "volume_multiple": t["volume_multiple"],
         }
-        for t in sorted_t[-5:]
+        for t in decliners[-5:]  # Take last 5 (most negative)
     ]
+    
+    # Reverse decliners to show most negative first
+    top_d.reverse()
+    
     return {"top_gainers": top_g, "top_decliners": top_d}
 
 
@@ -677,17 +740,25 @@ def generate_evidence_items(
     for e in events:
         # Fact-only excerpt: pick one fact line verbatim
         fact = rng.choice(e["facts"])
-        excerpt = f"{fact}"
+        excerpt = sanitize_l1_text(fact).strip()
+        
+        # stable per evidence record
+        evid_suffix = _short_hash(e["event_id"])
+        
+        source_name = e["source"]["name"]
+        source_slug = source_name.upper().replace(" ", "-")
+        date_slug = date.replace("-", "")
+        
         out.append(
             {
                 "event_id": e["event_id"],
-                "source_name": e["source"]["name"],
+                "source_name": source_name,
                 "source_type": e["source"]["source_type"],
                 "published_ts": e["published_ts"],
                 "canonical_url": e["source"]["canonical_url"],
-                "excerpt": excerpt,
-                "doc_id": f"{e['source']['name'].upper().replace(' ', '-')}-{date.replace('-', '')}",
-                "chunk_id": f"evidence_{e['event_type']}_{date}",
+                "excerpt": excerpt[:280],  # hard cap for chunk stability
+                "doc_id": f"{source_slug}-{date_slug}-{evid_suffix}",
+                "chunk_id": f"evidence_{e['event_type']}_{date}_{evid_suffix}",
             }
         )
     return out
