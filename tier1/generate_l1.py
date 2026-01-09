@@ -572,8 +572,34 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
             facts = [sanitize_l1_text(f"Treasury auction {maturity}: stop-out {stop_out}%, bid-to-cover {bid_cover}")]
         elif et == "fed_speech":
             speaker = rng.choice(["Chair", "Vice Chair", "Regional President"])
+            venue = rng.choice(["Economic Club of New York", "Brookings Institution", "Chamber of Commerce", "Federal Reserve Bank of St. Louis", "National Press Club"])
             topic = rng.choice(["monetary policy", "economic outlook", "inflation target"])
-            facts = [sanitize_l1_text(f"Fed {speaker} delivered speech on {topic}.")]
+            
+            # Generate realistic quotes based on topic
+            if topic == "inflation target":
+                quote = rng.choice([
+                    "We remain committed to our 2% inflation target and will take appropriate action to achieve it.",
+                    "Inflation is moving toward our 2% goal, but we need to see sustained progress.",
+                    "The inflation target remains at 2% and we are confident in reaching it over time."
+                ])
+            elif topic == "monetary policy":
+                quote = rng.choice([
+                    "Monetary policy will remain data-dependent as we assess incoming economic information.",
+                    "We will continue to adjust monetary policy based on economic conditions and inflation trends.",
+                    "The current monetary policy stance is appropriate given economic conditions."
+                ])
+            else:  # economic outlook
+                quote = rng.choice([
+                    "The economic outlook remains positive with moderate growth expected in coming quarters.",
+                    "We anticipate steady economic growth supported by strong labor market conditions.",
+                    "Economic activity continues to expand at a sustainable pace."
+                ])
+            
+            facts = [
+                sanitize_l1_text(f"Fed {speaker} delivered speech on {topic}."),
+                sanitize_l1_text(f"Venue: {venue}."),
+                sanitize_l1_text(f"Quote: \"{quote}\"")
+            ]
         else:
             facts = [sanitize_l1_text(f"{et} event recorded for {date}.")]
         source = {

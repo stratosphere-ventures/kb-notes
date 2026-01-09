@@ -55,6 +55,7 @@ sources_used:
 {% else %}
 {% for r in day.market_outcomes.rates_fx_commodities %}
 - **{{ r.symbol }}**: {{ r.value }}{% if r.unit == "pct" %}%{% elif r.unit == "bps" %} bps{% elif r.unit == "usd" %} USD{% elif r.unit == "index" %}{% elif r.unit == "ratio" %}{% endif %}
+
 {% if r.change_bps is defined %}
   - Change: {{ "%+g"|format(r.change_bps) }} bps
 {% elif r.symbol == "EURUSD" and r.change_abs is defined and r.change_pct is defined %}
