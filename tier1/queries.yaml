@@ -1,0 +1,52 @@
+golden_queries:
+- query_id: q_wrap_summary_close
+  query_text: What were the index closes and daily returns for the US market wrap
+    on 2026-01-06?
+  filters:
+    doc_type: market_wrap_l1
+    region: US
+    date: '2026-01-06'
+  expected_targets:
+  - chunk_id: wrap_summary
+- query_id: q_wrap_timeline_events
+  query_text: List the session timeline events for the US market wrap on 2026-01-06.
+  filters:
+    doc_type: market_wrap_l1
+    region: US
+    date: '2026-01-06'
+  expected_targets:
+  - chunk_id: wrap_timeline
+- query_id: q_wrap_reactions
+  query_text: What were the measured reaction windows for SPX on 2026-01-06?
+  filters:
+    doc_type: market_wrap_l1
+    region: US
+    date: '2026-01-06'
+  expected_targets:
+  - chunk_id: wrap_reactions
+- query_id: q_movers_sectors
+  query_text: Who were the top movers and what were sector returns on 2026-01-06?
+  filters:
+    doc_type: market_wrap_l1
+    region: US
+    date: '2026-01-06'
+  expected_targets:
+  - chunk_id: wrap_movers_sectors
+- query_id: q_ticker_panel_nvda
+  query_text: Show the NVDA company fact panel for 2026-01-06.
+  filters:
+    doc_type: market_wrap_l1
+    region: US
+    date: '2026-01-06'
+    entity: NVDA
+  expected_targets:
+  - chunk_id: wrap_ticker_panels
+  notes: In Tier-1, ticker panels are contained in wrap_ticker_panels. If you split
+    ticker panels into separate docs later, update expected_targets accordingly.
+eval_notes:
+  recall_at_k: 10
+  pass_criteria:
+    all_expected_targets_in_top_k: true
+  implementation_hint: Map chunk_id markers (e.g., wrap_summary) to stored chunk metadata
+    (chunk_type or chunk_id) during ingestion so retrieval eval can match expected
+    targets.
