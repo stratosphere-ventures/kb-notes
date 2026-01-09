@@ -25,8 +25,12 @@ sources_used:
 {% for s in g.sources_used %}
   - source_name: {{ s.source_name }}
     source_type: {{ s.source_type }}
-    {% if s.count is defined %}count: {{ s.count }}{% endif %}
-    {% if s.max_age_days is defined %}max_age_days: {{ s.max_age_days }}{% endif %}
+  {% if s.count is defined %}
+    count: {{ s.count }}
+  {% endif %}
+  {% if s.max_age_days is defined %}
+    max_age_days: {{ s.max_age_days }}
+  {% endif %}
 {% endfor %}
 {% endif %}
 ---
