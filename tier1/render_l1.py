@@ -17,12 +17,39 @@ import sys
 from typing import List, Tuple
 
 FORBIDDEN_TOKENS = [
-    "because", "due to", "driven by", "as investors", "on hopes", "on fears",
-    "relief", "concerns", "sentiment", "risk-on", "risk off", "risk-off",
-    "bullish", "bearish", "support", "resistance", "oversold", "overbought",
-    "priced in", "implies", "signals", "likely", "expected to", "should",
-    "could", "may ", "outlook", "forecast",
-    "led", "dragged", "weighed", "boosted", "lagged",
+    "because",
+    "due to",
+    "driven by",
+    "as investors",
+    "on hopes",
+    "on fears",
+    "relief",
+    "concerns",
+    "sentiment",
+    "risk-on",
+    "risk off",
+    "risk-off",
+    "bullish",
+    "bearish",
+    "support",
+    "resistance",
+    "oversold",
+    "overbought",
+    "priced in",
+    "implies",
+    "signals",
+    "likely",
+    "expected to",
+    "should",
+    "could",
+    "may ",
+    "outlook",
+    "forecast",
+    "led",
+    "dragged",
+    "weighed",
+    "boosted",
+    "lagged",
 ]
 
 REQUIRED_HEADINGS = [
@@ -43,12 +70,14 @@ REQUIRED_CHUNKS = [
     "wrap_evidence",
 ]
 
+
 def contains_forbidden(text: str) -> Tuple[bool, str]:
     t = (text or "").lower()
     for tok in FORBIDDEN_TOKENS:
         if tok in t:
             return True, tok
     return False, ""
+
 
 def md_lint(rendered: str) -> List[str]:
     issues = []
@@ -72,9 +101,12 @@ def md_lint(rendered: str) -> List[str]:
     # Example pattern: "- **A**: ... - **B**: ..." on same line
     concat_bullet_re = re.compile(r"^- .* - \*\*", re.MULTILINE)
     if concat_bullet_re.search(rendered):
-        issues.append("MD-LINT-FMT-001 concatenated bullet items detected (ensure one bullet per line).")
+        issues.append(
+            "MD-LINT-FMT-001 concatenated bullet items detected (ensure one bullet per line)."
+        )
 
     return issues
+
 
 def render_one(json_path: str, template_path: str, output_dir: str) -> Tuple[bool, str]:
     try:
@@ -82,26 +114,31 @@ def render_one(json_path: str, template_path: str, output_dir: str) -> Tuple[boo
     except ImportError:
         return False, "jinja2 not installed (pip install jinja2)"
 
-    with open(json_path, "r") as f:
-        day = json.load(f)
+    try:
+        # Load JSON data
+        with open(json_path, "r") as f:
+            day = json.load(f)
 
-    template_dir = os.path.dirname(template_path)
-    template_name = os.path.basename(template_path)
+        template_dir = os.path.dirname(template_path)
+        template_name = os.path.basename(template_path)
 
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(template_dir),
-        trim_blocks=True,
-        lstrip_blocks=True,
-        undefined=jinja2.StrictUndefined,  # fail fast if template references missing fields
-    )
-    template = env.get_template(template_name)
+        # Configure Jinja2 environment
+        env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(template_dir),
+            trim_blocks=True,
+            lstrip_blocks=True,
+        )
+        template = env.get_template(template_name)
 
-    rendered = template.render(day=day)
+        # Render template
+        rendered = template.render(day=day)
 
-    # Post-render markdown lint
-    issues = md_lint(rendered)
-    if issues:
-        return False, "; ".join(issues)
+        # Post-render markdown lint
+        issues = md_lint(rendered)
+        if issues:
+            return False, "; ".join(issues)
+    except Exception as e:
+        return False, f"Render failed: {str(e)}"
 
     out_name = os.path.basename(json_path).replace(".json", ".md")
     out_path = os.path.join(output_dir, out_name)
@@ -110,8 +147,11 @@ def render_one(json_path: str, template_path: str, output_dir: str) -> Tuple[boo
 
     return True, out_name
 
+
 def main():
-    p = argparse.ArgumentParser(description="Render Layer-1 JSON files to Markdown (v2)")
+    p = argparse.ArgumentParser(
+        description="Render Layer-1 JSON files to Markdown (v2)"
+    )
     p.add_argument("--template", default="market_wrap_l1.md.j2")
     p.add_argument("--input-dir", default="sample_data")
     p.add_argument("--output-dir", default="sample_output")
@@ -139,7 +179,7 @@ def main():
     failed = 0
 
     print(f"Rendering {len(json_files)} file(s) using {args.template} ...")
-    print("="*70)
+    print("=" * 70)
 
     for jf in json_files:
         full = os.path.join(input_dir, jf)
@@ -151,10 +191,11 @@ def main():
             failed += 1
             print(f"FAIL: {jf} -> {msg}")
 
-    print("="*70)
+    print("=" * 70)
     print(f"Render complete: {passed} passed, {failed} failed")
 
     return 0 if failed == 0 else 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
