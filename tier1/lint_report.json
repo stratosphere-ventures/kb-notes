@@ -1,0 +1,172 @@
+{
+  "profile": "eval",
+  "files": [
+    {
+      "filename": "day_2026-01-08.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-01-15.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-01-22.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-02-05.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-02-12.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-02-19.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-02-28.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-03.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-06.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-10.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-13.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-16.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-17.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-20.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-24.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-27.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-03-31.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-03.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-07.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-10.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-14.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-17.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-21.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-24.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-28.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "filename": "day_2026-04-30.json",
+      "schema_ok": true,
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "cross_file": {
+    "errors": [
+      {
+        "code": "L1-REAL-001",
+        "severity": "HARD",
+        "path": "day_2026-03-13.json:market_outcomes.indices[IWM].close",
+        "message": "IWM close 216.41 repeats across dates (2026-01-08 and 2026-03-13). This degrades eval realism."
+      }
+    ],
+    "warnings": []
+  }
+}

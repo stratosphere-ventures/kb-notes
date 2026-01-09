@@ -1,0 +1,607 @@
+{
+  "governance": {
+    "date": "2026-04-03",
+    "region": "US",
+    "market_session": "post",
+    "published_ts": "2026-04-03T20:00:00Z",
+    "asof_ts": "2026-04-03T16:00:00Z",
+    "universe_scope": "SPX",
+    "doc_version": 1,
+    "trust_tier": 1,
+    "license_policy": "internal_synthetic",
+    "market_data_vendor": "Massive",
+    "market_data_version": "massive_bars_v3",
+    "calc_versions": [
+      "technicals_v1.2.1",
+      "impact_v1.0.1"
+    ],
+    "pipeline_version": "v2.2.0",
+    "doc_id": "75feabbe-13da-4330-a3ab-30d22820a12a",
+    "doc_key": "market_wrap/us/2026-04-03",
+    "is_current": true,
+    "is_active": true,
+    "sources_used": [
+      {
+        "source_name": "Massive",
+        "source_type": "market_data",
+        "count": 0,
+        "max_age_days": 0
+      },
+      {
+        "source_name": "SyntheticWire",
+        "source_type": "news_wire_synthetic",
+        "count": 0,
+        "max_age_days": 0
+      }
+    ]
+  },
+  "market_outcomes": {
+    "headline_neutral": "US equities: SPX +0.58%, NDX +0.39%, DJIA +0.42%, RUT +0.75%.",
+    "indices": [
+      {
+        "symbol": "SPX",
+        "close": 4970.0,
+        "return_pct": 0.58,
+        "high": 5019.26,
+        "low": 4932.99
+      },
+      {
+        "symbol": "NDX",
+        "close": 19421.05,
+        "return_pct": 0.39,
+        "high": 19481.3,
+        "low": 19309.92
+      },
+      {
+        "symbol": "RUT",
+        "close": 2194.92,
+        "return_pct": 0.75
+      },
+      {
+        "symbol": "DJIA",
+        "close": 38537.1,
+        "return_pct": 0.42
+      },
+      {
+        "symbol": "QQQ",
+        "close": 478.21,
+        "return_pct": 0.1
+      },
+      {
+        "symbol": "IWM",
+        "close": 219.02,
+        "return_pct": 0.47
+      }
+    ],
+    "rates_fx_commodities": [
+      {
+        "symbol": "UST 2Y",
+        "value": 4.12,
+        "unit": "bps",
+        "change": 1.7
+      },
+      {
+        "symbol": "UST 10Y",
+        "value": 4.33,
+        "unit": "bps",
+        "change": -4.3
+      },
+      {
+        "symbol": "DXY",
+        "value": 102.59,
+        "unit": "index",
+        "change": 0.25
+      },
+      {
+        "symbol": "EURUSD",
+        "value": 1.0873,
+        "unit": "index",
+        "change": -0.07
+      },
+      {
+        "symbol": "WTI Crude",
+        "value": 78.68,
+        "unit": "usd",
+        "change": 3.8
+      },
+      {
+        "symbol": "Gold",
+        "value": 2043.05,
+        "unit": "usd",
+        "change": -0.11
+      }
+    ],
+    "volatility": [
+      {
+        "symbol": "VIX",
+        "close": 14.14,
+        "change": -0.71
+      },
+      {
+        "symbol": "VIX9D",
+        "close": 15.23,
+        "change": -0.65
+      }
+    ],
+    "breadth": {
+      "advancers": 1587,
+      "decliners": 2184,
+      "pct_above_200dma": 50.8
+    }
+  },
+  "events": [
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "event_type": "corporate_action",
+      "published_ts": "2026-04-03T21:18:00Z",
+      "market_session": "post",
+      "facts": [
+        "MSFT announced a corporate action filing.",
+        "Record date: 2026-04-21"
+      ],
+      "source": {
+        "name": "SEC",
+        "source_type": "regulatory_filing_synthetic",
+        "canonical_url": "synthetic://sec/edgar/data/0000789019/2026-04-03/MSFT/event"
+      },
+      "entities": [
+        "MSFT",
+        "SPX",
+        "Technology"
+      ]
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "event_type": "regulatory_release",
+      "published_ts": "2026-04-03T21:49:00Z",
+      "market_session": "post",
+      "facts": [
+        "regulatory_release event recorded for 2026-04-03."
+      ],
+      "source": {
+        "name": "SyntheticWire",
+        "source_type": "news_wire_synthetic",
+        "canonical_url": "synthetic://wire/2026-04-03/evt_regulatory_release_2026-04-03_3"
+      },
+      "entities": [
+        "SPX",
+        "NDX"
+      ]
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "event_type": "corporate_action",
+      "published_ts": "2026-04-03T21:55:00Z",
+      "market_session": "post",
+      "facts": [
+        "AAPL announced a corporate action filing.",
+        "Record date: 2026-04-21"
+      ],
+      "source": {
+        "name": "SEC",
+        "source_type": "regulatory_filing_synthetic",
+        "canonical_url": "synthetic://sec/edgar/data/0000320193/2026-04-03/AAPL/event"
+      },
+      "entities": [
+        "AAPL",
+        "SPX",
+        "Technology"
+      ]
+    }
+  ],
+  "reaction_windows": [
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.051
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.231
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.622
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.075
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.525
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "BAC",
+      "window": "pre_to_close",
+      "move_pct": -1.176
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "XLE",
+      "window": "t0_to_t+60m",
+      "move_pct": -1.159
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "instrument": "UNH",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.95
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.734
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.441
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.907
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.886
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.941
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "JNJ",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.184
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "DE",
+      "window": "pre_to_close",
+      "move_pct": 1.616
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "instrument": "PFE",
+      "window": "t0_to_t+60m",
+      "move_pct": 1.063
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.217
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.021
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.27
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.08
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.335
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "PFE",
+      "window": "pre_to_close",
+      "move_pct": -1.142
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "XLE",
+      "window": "t0_to_t+30m",
+      "move_pct": 0.222
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "instrument": "WFC",
+      "window": "pre_to_close",
+      "move_pct": -1.275
+    }
+  ],
+  "movers": {
+    "top_gainers": [
+      {
+        "symbol": "XLC",
+        "return_pct": 1.79,
+        "sector": "Communication Services",
+        "volume_multiple": 1.5
+      },
+      {
+        "symbol": "XLE",
+        "return_pct": 1.47,
+        "sector": "Energy",
+        "volume_multiple": 1.5
+      },
+      {
+        "symbol": "MRK",
+        "return_pct": 1.06,
+        "sector": "Healthcare",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "PFE",
+        "return_pct": 0.36,
+        "sector": "Healthcare",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "WFC",
+        "return_pct": 0.27,
+        "sector": "Financials",
+        "volume_multiple": 1.3
+      }
+    ],
+    "top_decliners": [
+      {
+        "symbol": "JNJ",
+        "return_pct": -0.71,
+        "sector": "Healthcare",
+        "volume_multiple": 1.1
+      },
+      {
+        "symbol": "PXD",
+        "return_pct": -0.8,
+        "sector": "Energy",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "BAC",
+        "return_pct": -1.34,
+        "sector": "Financials",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "DE",
+        "return_pct": -1.55,
+        "sector": "Industrials",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "UNH",
+        "return_pct": -1.57,
+        "sector": "Healthcare",
+        "volume_multiple": 1.3
+      }
+    ]
+  },
+  "sectors": [
+    {
+      "name": "XLK",
+      "return_pct": 1.71,
+      "volume_multiple": 1.31
+    },
+    {
+      "name": "XLF",
+      "return_pct": 1.23,
+      "volume_multiple": 1.39
+    },
+    {
+      "name": "XLE",
+      "return_pct": 2.54,
+      "volume_multiple": 1.34
+    },
+    {
+      "name": "XLU",
+      "return_pct": 1.05,
+      "volume_multiple": 1.26
+    },
+    {
+      "name": "XLRE",
+      "return_pct": 0.57,
+      "volume_multiple": 1.23
+    },
+    {
+      "name": "XLY",
+      "return_pct": 0.39,
+      "volume_multiple": 1.09
+    },
+    {
+      "name": "XLC",
+      "return_pct": 0.85,
+      "volume_multiple": 1.22
+    }
+  ],
+  "tickers": [
+    {
+      "symbol": "AAPL",
+      "close": 196.3,
+      "return_pct": 0.23,
+      "volume_multiple": 1.1,
+      "technicals": {
+        "sma_50": 197.24,
+        "sma_200": 208.8,
+        "rsi_14": 69.8
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "DE",
+      "close": 389.65,
+      "return_pct": -1.55,
+      "volume_multiple": 1.4,
+      "technicals": {
+        "sma_50": 391.69,
+        "sma_200": 380.0,
+        "rsi_14": 51.5
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "UNH",
+      "close": 517.53,
+      "return_pct": -1.57,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 525.21,
+        "sma_200": 473.66,
+        "rsi_14": 55.5
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "WFC",
+      "close": 58.36,
+      "return_pct": 0.27,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 56.17,
+        "sma_200": 54.42,
+        "rsi_14": 37.9
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "JNJ",
+      "close": 167.31,
+      "return_pct": -0.71,
+      "volume_multiple": 1.1,
+      "technicals": {
+        "sma_50": 168.17,
+        "sma_200": 175.16,
+        "rsi_14": 41.9
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "BAC",
+      "close": 37.94,
+      "return_pct": -1.34,
+      "volume_multiple": 1.4,
+      "technicals": {
+        "sma_50": 38.7,
+        "sma_200": 35.69,
+        "rsi_14": 72.9
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "PFE",
+      "close": 29.51,
+      "return_pct": 0.36,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 29.42,
+        "sma_200": 31.81,
+        "rsi_14": 45.1
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "XLE",
+      "close": 93.76,
+      "return_pct": 1.47,
+      "volume_multiple": 1.5,
+      "technicals": {
+        "sma_50": 95.43,
+        "sma_200": 102.72,
+        "rsi_14": 43.0
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "PXD",
+      "close": 243.83,
+      "return_pct": -0.8,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 237.28,
+        "sma_200": 247.41,
+        "rsi_14": 30.6
+      },
+      "filings_identified": true
+    },
+    {
+      "symbol": "XLC",
+      "close": 73.7,
+      "return_pct": 1.79,
+      "volume_multiple": 1.5,
+      "technicals": {
+        "sma_50": 74.86,
+        "sma_200": 74.16,
+        "rsi_14": 51.3
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "MRK",
+      "close": 111.47,
+      "return_pct": 1.06,
+      "volume_multiple": 1.4,
+      "technicals": {
+        "sma_50": 110.61,
+        "sma_200": 112.75,
+        "rsi_14": 68.3
+      },
+      "filings_identified": true
+    }
+  ],
+  "evidence_items": [
+    {
+      "event_id": "evt_corporate_action_2026-04-03_1",
+      "source_name": "SEC",
+      "source_type": "regulatory_filing_synthetic",
+      "published_ts": "2026-04-03T21:18:00Z",
+      "canonical_url": "synthetic://sec/edgar/data/0000789019/2026-04-03/MSFT/event",
+      "excerpt": "Record date: 2026-04-21",
+      "doc_id": "SEC-20260403",
+      "chunk_id": "evidence_corporate_action_2026-04-03"
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-04-03_3",
+      "source_name": "SyntheticWire",
+      "source_type": "news_wire_synthetic",
+      "published_ts": "2026-04-03T21:49:00Z",
+      "canonical_url": "synthetic://wire/2026-04-03/evt_regulatory_release_2026-04-03_3",
+      "excerpt": "regulatory_release event recorded for 2026-04-03.",
+      "doc_id": "SYNTHETICWIRE-20260403",
+      "chunk_id": "evidence_regulatory_release_2026-04-03"
+    },
+    {
+      "event_id": "evt_corporate_action_2026-04-03_2",
+      "source_name": "SEC",
+      "source_type": "regulatory_filing_synthetic",
+      "published_ts": "2026-04-03T21:55:00Z",
+      "canonical_url": "synthetic://sec/edgar/data/0000320193/2026-04-03/AAPL/event",
+      "excerpt": "AAPL announced a corporate action filing.",
+      "doc_id": "SEC-20260403",
+      "chunk_id": "evidence_corporate_action_2026-04-03"
+    }
+  ]
+}
