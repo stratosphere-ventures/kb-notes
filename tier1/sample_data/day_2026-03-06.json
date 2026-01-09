@@ -16,7 +16,7 @@
       "impact_v1.0.1"
     ],
     "pipeline_version": "v2.2.0",
-    "doc_id": "57439921-7a3e-4a59-9bb2-3e2acb05d25b",
+    "doc_id": "a856255f-0966-4ea7-8052-d84e364badb3",
     "doc_key": "market_wrap/us/2026-03-06",
     "is_current": true,
     "is_active": true,
@@ -36,105 +36,132 @@
     ]
   },
   "market_outcomes": {
-    "headline_neutral": "US equities: SPX +0.12%, NDX +0.15%, DJIA +0.39%, RUT +1.00%.",
+    "headline_neutral": "US equities: SPX +0.08%, NDX -0.35%, DJIA +0.12%, RUT +0.21%.",
     "indices": [
       {
         "symbol": "SPX",
-        "close": 4915.84,
-        "return_pct": 0.12,
-        "high": 4947.61,
-        "low": 4878.45
+        "prev_close": 4867.68,
+        "close": 4871.38,
+        "return_pct": 0.08,
+        "low": 4856.13,
+        "high": 4896.72
       },
       {
         "symbol": "NDX",
-        "close": 19375.12,
-        "return_pct": 0.15,
-        "high": 19418.27,
-        "low": 19252.28
+        "prev_close": 19870.81,
+        "close": 19800.42,
+        "return_pct": -0.35,
+        "low": 19703.26,
+        "high": 19903.65
       },
       {
         "symbol": "RUT",
-        "close": 2159.94,
-        "return_pct": 1.0
+        "prev_close": 2225.72,
+        "close": 2230.45,
+        "return_pct": 0.21
       },
       {
         "symbol": "DJIA",
-        "close": 38335.46,
-        "return_pct": 0.39
+        "prev_close": 38733.83,
+        "close": 38780.53,
+        "return_pct": 0.12
       },
       {
         "symbol": "QQQ",
-        "close": 478.0,
-        "return_pct": 0.16
+        "prev_close": 487.24,
+        "close": 486.84,
+        "return_pct": -0.08
       },
       {
         "symbol": "IWM",
-        "close": 216.14,
-        "return_pct": 0.89
+        "prev_close": 221.6,
+        "close": 222.51,
+        "return_pct": 0.41
       }
     ],
     "rates_fx_commodities": [
       {
         "symbol": "UST 2Y",
-        "value": 4.16,
-        "unit": "bps",
-        "change": -0.4
+        "value": 4.11,
+        "unit": "pct",
+        "change_bps": 0.5
       },
       {
         "symbol": "UST 10Y",
-        "value": 4.39,
-        "unit": "bps",
-        "change": -2.2
+        "value": 4.27,
+        "unit": "pct",
+        "change_bps": -3.2
       },
       {
         "symbol": "DXY",
-        "value": 102.71,
+        "value": 102.11,
         "unit": "index",
-        "change": 0.09
+        "change_pct": 0.06
       },
       {
         "symbol": "EURUSD",
-        "value": 1.0822,
-        "unit": "index",
-        "change": -0.04
+        "value": 1.086,
+        "unit": "ratio",
+        "change_abs": 0.0023,
+        "change_pct": 0.21
       },
       {
         "symbol": "WTI Crude",
-        "value": 76.19,
+        "value": 78.52,
         "unit": "usd",
-        "change": 0.51
+        "change_pct": 3.59
       },
       {
         "symbol": "Gold",
-        "value": 2037.64,
+        "value": 2053.16,
         "unit": "usd",
-        "change": -0.37
+        "change_pct": 0.38
       }
     ],
     "volatility": [
       {
         "symbol": "VIX",
-        "close": 13.51,
-        "change": 0.84
+        "close": 15.2,
+        "change_pts": 1.5
       },
       {
         "symbol": "VIX9D",
-        "close": 14.67,
-        "change": -0.37
+        "close": 15.13,
+        "change_pts": 0.93
       }
     ],
     "breadth": {
-      "advancers": 3143,
-      "decliners": 3170,
-      "pct_above_200dma": 46.4
+      "advancers": 1551,
+      "decliners": 2606,
+      "pct_above_200dma": 54.1
     }
   },
   "events": [
     {
+      "event_id": "evt_earnings_8k_2026-03-06_5",
+      "event_type": "earnings_8k",
+      "published_ts": "2026-03-06T13:21:00Z",
+      "market_session": "post",
+      "facts": [
+        "EPS: $5.21 vs $3.47 expected",
+        "Revenue: $33.4B vs $44.6B expected"
+      ],
+      "source": {
+        "name": "AAPL",
+        "source_type": "sec_filing_synthetic",
+        "canonical_url": "synthetic://sec/edgar/data/0000320193/2026-03-06/AAPL/8-k"
+      },
+      "entities": [
+        "AAPL",
+        "SPX",
+        "Technology"
+      ]
+    },
+    {
       "event_id": "evt_treasury_auction_2026-03-06_1",
       "event_type": "treasury_auction",
-      "published_ts": "2026-03-06T14:29:00Z",
-      "market_session": "regular",
+      "published_ts": "2026-03-06T13:54:00Z",
+      "market_session": "pre",
       "facts": [
         "treasury_auction event recorded for 2026-03-06."
       ],
@@ -149,17 +176,17 @@
       ]
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "event_type": "treasury_auction",
-      "published_ts": "2026-03-06T16:46:00Z",
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "event_type": "regulatory_release",
+      "published_ts": "2026-03-06T16:31:00Z",
       "market_session": "regular",
       "facts": [
-        "treasury_auction event recorded for 2026-03-06."
+        "regulatory_release event recorded for 2026-03-06."
       ],
       "source": {
         "name": "SyntheticWire",
         "source_type": "news_wire_synthetic",
-        "canonical_url": "synthetic://wire/2026-03-06/evt_treasury_auction_2026-03-06_6"
+        "canonical_url": "synthetic://wire/2026-03-06/evt_regulatory_release_2026-03-06_2"
       },
       "entities": [
         "SPX",
@@ -167,57 +194,17 @@
       ]
     },
     {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "event_type": "corporate_action",
-      "published_ts": "2026-03-06T16:54:00Z",
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "event_type": "fed_speech",
+      "published_ts": "2026-03-06T18:21:00Z",
       "market_session": "regular",
       "facts": [
-        "XOM announced a corporate action filing.",
-        "Record date: 2026-03-24"
-      ],
-      "source": {
-        "name": "SEC",
-        "source_type": "regulatory_filing_synthetic",
-        "canonical_url": "synthetic://sec/edgar/data/0000000000/2026-03-06/XOM/event"
-      },
-      "entities": [
-        "XOM",
-        "SPX",
-        "Energy"
-      ]
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-03-06_5",
-      "event_type": "earnings_8k",
-      "published_ts": "2026-03-06T17:39:00Z",
-      "market_session": "post",
-      "facts": [
-        "EPS: $3.42 vs $4.29 expected",
-        "Revenue: $31.6B vs $44.3B expected"
-      ],
-      "source": {
-        "name": "GOOGL",
-        "source_type": "sec_filing_synthetic",
-        "canonical_url": "synthetic://sec/edgar/data/0001652044/2026-03-06/GOOGL/8-k"
-      },
-      "entities": [
-        "GOOGL",
-        "SPX",
-        "Technology"
-      ]
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
-      "event_type": "treasury_auction",
-      "published_ts": "2026-03-06T19:20:00Z",
-      "market_session": "regular",
-      "facts": [
-        "treasury_auction event recorded for 2026-03-06."
+        "fed_speech event recorded for 2026-03-06."
       ],
       "source": {
         "name": "SyntheticWire",
         "source_type": "news_wire_synthetic",
-        "canonical_url": "synthetic://wire/2026-03-06/evt_treasury_auction_2026-03-06_2"
+        "canonical_url": "synthetic://wire/2026-03-06/evt_fed_speech_2026-03-06_4"
       },
       "entities": [
         "SPX",
@@ -225,17 +212,35 @@
       ]
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
-      "event_type": "economic_release",
-      "published_ts": "2026-03-06T20:19:00Z",
-      "market_session": "post",
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "event_type": "regulatory_release",
+      "published_ts": "2026-03-06T18:24:00Z",
+      "market_session": "regular",
       "facts": [
-        "economic_release event recorded for 2026-03-06."
+        "regulatory_release event recorded for 2026-03-06."
       ],
       "source": {
         "name": "SyntheticWire",
         "source_type": "news_wire_synthetic",
-        "canonical_url": "synthetic://wire/2026-03-06/evt_economic_release_2026-03-06_3"
+        "canonical_url": "synthetic://wire/2026-03-06/evt_regulatory_release_2026-03-06_3"
+      },
+      "entities": [
+        "SPX",
+        "NDX"
+      ]
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "event_type": "fed_speech",
+      "published_ts": "2026-03-06T20:29:00Z",
+      "market_session": "post",
+      "facts": [
+        "fed_speech event recorded for 2026-03-06."
+      ],
+      "source": {
+        "name": "SyntheticWire",
+        "source_type": "news_wire_synthetic",
+        "canonical_url": "synthetic://wire/2026-03-06/evt_fed_speech_2026-03-06_6"
       },
       "entities": [
         "SPX",
@@ -245,591 +250,639 @@
   ],
   "reaction_windows": [
     {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
+      "event_id": "evt_earnings_8k_2026-03-06_5",
       "instrument": "SPX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.198
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "NDX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.253
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "DJIA",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.099
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "RUT",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.066
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "VIX",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.016
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "PG",
-      "window": "pre_to_close",
-      "move_pct": -0.784
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "NKE",
-      "window": "pre_to_close",
-      "move_pct": 1.025
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_1",
-      "instrument": "MRK",
-      "window": "pre_to_close",
-      "move_pct": 0.588
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "SPX",
-      "window": "t0_to_t+60m",
-      "move_pct": 1.116
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "NDX",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.886
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "DJIA",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.72
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "RUT",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.353
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "VIX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.667
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "GS",
-      "window": "pre_to_close",
-      "move_pct": 1.801
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "NKE",
-      "window": "pre_to_close",
-      "move_pct": 0.866
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
-      "instrument": "HD",
-      "window": "t0_to_t+30m",
-      "move_pct": 0.052
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "SPX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.024
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "NDX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.431
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "DJIA",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.059
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "RUT",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.078
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "VIX",
       "window": "t0_to_t+60m",
       "move_pct": -0.034
     },
     {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "HD",
-      "window": "t0_to_t+30m",
-      "move_pct": 0.735
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "GE",
-      "window": "t0_to_t+30m",
-      "move_pct": -0.626
-    },
-    {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "instrument": "GS",
-      "window": "t0_to_t+30m",
-      "move_pct": -0.476
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-03-06_5",
-      "instrument": "SPX",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.405
-    },
-    {
       "event_id": "evt_earnings_8k_2026-03-06_5",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.089
+      "move_pct": -0.086
     },
     {
       "event_id": "evt_earnings_8k_2026-03-06_5",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": 0.462
+      "move_pct": -0.478
     },
     {
       "event_id": "evt_earnings_8k_2026-03-06_5",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": 0.095
+      "move_pct": -0.418
     },
     {
       "event_id": "evt_earnings_8k_2026-03-06_5",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.587
+      "move_pct": 0.299
     },
     {
       "event_id": "evt_earnings_8k_2026-03-06_5",
-      "instrument": "PG",
+      "instrument": "MRK",
       "window": "t0_to_t+30m",
-      "move_pct": 1.011
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-03-06_5",
-      "instrument": "KO",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.387
+      "move_pct": -0.716
     },
     {
       "event_id": "evt_earnings_8k_2026-03-06_5",
       "instrument": "MCD",
-      "window": "pre_to_close",
-      "move_pct": 0.596
+      "window": "t0_to_t+30m",
+      "move_pct": 0.16
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
+      "event_id": "evt_earnings_8k_2026-03-06_5",
+      "instrument": "MSFT",
+      "window": "pre_to_close",
+      "move_pct": -0.801
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-03-06_1",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.218
+      "move_pct": -0.251
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.233
+      "move_pct": -0.112
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": 0.285
+      "move_pct": -0.284
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": 0.207
+      "move_pct": 0.127
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.012
+      "move_pct": 0.221
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
-      "instrument": "HD",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
+      "instrument": "MRK",
       "window": "t0_to_t+30m",
-      "move_pct": -0.614
+      "move_pct": -1.137
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
-      "instrument": "LLY",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.261
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
-      "instrument": "GS",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
+      "instrument": "DE",
       "window": "pre_to_close",
-      "move_pct": -0.383
+      "move_pct": 1.141
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
+      "event_id": "evt_treasury_auction_2026-03-06_1",
+      "instrument": "META",
+      "window": "t0_to_t+30m",
+      "move_pct": -0.056
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.477
+      "move_pct": -0.415
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
+      "event_id": "evt_regulatory_release_2026-03-06_2",
       "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.216
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.377
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.311
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.426
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "instrument": "CAT",
+      "window": "pre_to_close",
+      "move_pct": -0.087
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "instrument": "XLF",
+      "window": "t0_to_t+60m",
+      "move_pct": -1.215
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_2",
+      "instrument": "KO",
+      "window": "pre_to_close",
+      "move_pct": -0.528
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.459
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.386
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.77
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.425
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.36
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "XLU",
+      "window": "t0_to_t+60m",
+      "move_pct": -1.343
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "MCD",
+      "window": "t0_to_t+30m",
+      "move_pct": -1.193
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_4",
+      "instrument": "CAT",
+      "window": "pre_to_close",
+      "move_pct": -0.661
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.139
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.298
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.148
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.263
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.168
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "HD",
+      "window": "t0_to_t+30m",
+      "move_pct": -0.323
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "CAT",
+      "window": "t0_to_t+30m",
+      "move_pct": -1.286
+    },
+    {
+      "event_id": "evt_regulatory_release_2026-03-06_3",
+      "instrument": "MRK",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.081
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "instrument": "SPX",
       "window": "t0_to_t+60m",
       "move_pct": 0.568
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.385
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_6",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": -0.057
+      "move_pct": 0.252
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
+      "event_id": "evt_fed_speech_2026-03-06_6",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": 0.129
+      "move_pct": 0.418
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
+      "event_id": "evt_fed_speech_2026-03-06_6",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.395
+      "move_pct": 0.175
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
-      "instrument": "XLY",
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "instrument": "MRK",
       "window": "pre_to_close",
-      "move_pct": 0.197
+      "move_pct": 0.69
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
-      "instrument": "LLY",
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "instrument": "XLF",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.827
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "instrument": "MCD",
       "window": "t0_to_t+30m",
-      "move_pct": 0.781
-    },
-    {
-      "event_id": "evt_economic_release_2026-03-06_3",
-      "instrument": "XLE",
-      "window": "pre_to_close",
-      "move_pct": -0.275
+      "move_pct": 0.48
     }
   ],
   "movers": {
     "top_gainers": [
       {
         "symbol": "MRK",
-        "return_pct": 2.43,
+        "return_pct": 1.76,
         "sector": "Healthcare",
-        "volume_multiple": 1.3
-      },
-      {
-        "symbol": "XLE",
-        "return_pct": 2.18,
-        "sector": "Energy",
         "volume_multiple": 1.5
       },
       {
-        "symbol": "HD",
-        "return_pct": 2.07,
-        "sector": "Consumer Discretionary",
-        "volume_multiple": 1.5
-      },
-      {
-        "symbol": "NKE",
-        "return_pct": 1.79,
-        "sector": "Consumer Discretionary",
-        "volume_multiple": 1.5
-      },
-      {
-        "symbol": "MCD",
-        "return_pct": 0.92,
-        "sector": "Consumer Discretionary",
-        "volume_multiple": 1.3
-      }
-    ],
-    "top_decliners": [
-      {
-        "symbol": "LLY",
-        "return_pct": 0.05,
-        "sector": "Healthcare",
-        "volume_multiple": 1.0
-      },
-      {
-        "symbol": "PG",
-        "return_pct": 0.02,
-        "sector": "Consumer Staples",
-        "volume_multiple": 1.2
-      },
-      {
-        "symbol": "GE",
-        "return_pct": -0.52,
-        "sector": "Industrials",
-        "volume_multiple": 1.2
-      },
-      {
-        "symbol": "GS",
-        "return_pct": -1.43,
-        "sector": "Financials",
+        "symbol": "XLU",
+        "return_pct": 1.61,
+        "sector": "Utilities",
         "volume_multiple": 1.2
       },
       {
         "symbol": "KO",
-        "return_pct": -1.75,
+        "return_pct": 1.54,
         "sector": "Consumer Staples",
         "volume_multiple": 1.3
+      },
+      {
+        "symbol": "CAT",
+        "return_pct": 1.4,
+        "sector": "Industrials",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "HD",
+        "return_pct": 1.36,
+        "sector": "Consumer Discretionary",
+        "volume_multiple": 1.4
+      }
+    ],
+    "top_decliners": [
+      {
+        "symbol": "NVDA",
+        "return_pct": -0.68,
+        "sector": "Technology",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "META",
+        "return_pct": -1.47,
+        "sector": "Communication Services",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "MSFT",
+        "return_pct": -1.97,
+        "sector": "Technology",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "MCD",
+        "return_pct": -2.33,
+        "sector": "Consumer Discretionary",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "COP",
+        "return_pct": -2.61,
+        "sector": "Energy",
+        "volume_multiple": 1.5
       }
     ]
   },
   "sectors": [
     {
       "name": "XLK",
-      "return_pct": 1.14,
-      "volume_multiple": 1.41
+      "return_pct": -0.32,
+      "volume_multiple": 1.15
     },
     {
       "name": "XLF",
-      "return_pct": 0.32,
-      "volume_multiple": 1.14
+      "return_pct": -0.69,
+      "volume_multiple": 1.35
     },
     {
       "name": "XLE",
-      "return_pct": -0.76,
-      "volume_multiple": 1.18
+      "return_pct": 1.14,
+      "volume_multiple": 1.33
     },
     {
       "name": "XLU",
-      "return_pct": 0.53,
-      "volume_multiple": 1.24
+      "return_pct": -0.29,
+      "volume_multiple": 1.25
     },
     {
       "name": "XLRE",
-      "return_pct": -0.15,
-      "volume_multiple": 1.21
+      "return_pct": -1.27,
+      "volume_multiple": 1.36
     },
     {
       "name": "XLY",
-      "return_pct": -0.35,
-      "volume_multiple": 1.13
+      "return_pct": -0.62,
+      "volume_multiple": 1.12
     },
     {
       "name": "XLC",
-      "return_pct": -0.26,
-      "volume_multiple": 1.2
+      "return_pct": 0.44,
+      "volume_multiple": 1.34
     }
   ],
   "tickers": [
     {
-      "symbol": "MCD",
-      "close": 301.23,
-      "return_pct": 0.92,
-      "volume_multiple": 1.3,
-      "technicals": {
-        "sma_50": 311.25,
-        "sma_200": 295.88,
-        "rsi_14": 32.9
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "HD",
-      "close": 393.37,
-      "return_pct": 2.07,
-      "volume_multiple": 1.5,
-      "technicals": {
-        "sma_50": 383.94,
-        "sma_200": 396.71,
-        "rsi_14": 40.8
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "NKE",
-      "close": 100.26,
-      "return_pct": 1.79,
-      "volume_multiple": 1.5,
-      "technicals": {
-        "sma_50": 101.21,
-        "sma_200": 107.98,
-        "rsi_14": 68.3
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "XLE",
-      "close": 94.42,
-      "return_pct": 2.18,
-      "volume_multiple": 1.5,
-      "technicals": {
-        "sma_50": 91.35,
-        "sma_200": 96.3,
-        "rsi_14": 43.1
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "GS",
-      "close": 414.16,
-      "return_pct": -1.43,
+      "symbol": "XLU",
+      "close": 69.96,
+      "return_pct": 1.61,
       "volume_multiple": 1.2,
       "technicals": {
-        "sma_50": 402.16,
-        "sma_200": 426.2,
-        "rsi_14": 73.9
+        "sma_50": 69.08,
+        "sma_200": 71.36,
+        "rsi_14": 38.8
       },
       "filings_identified": false
     },
     {
-      "symbol": "XLY",
-      "close": 179.16,
-      "return_pct": 0.31,
+      "symbol": "DE",
+      "close": 396.67,
+      "return_pct": 0.22,
       "volume_multiple": 1.1,
       "technicals": {
-        "sma_50": 186.15,
-        "sma_200": 179.74,
-        "rsi_14": 34.4
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "LLY",
-      "close": 745.5,
-      "return_pct": 0.05,
-      "volume_multiple": 1.0,
-      "technicals": {
-        "sma_50": 774.14,
-        "sma_200": 709.01,
-        "rsi_14": 33.4
+        "sma_50": 402.37,
+        "sma_200": 409.35,
+        "rsi_14": 32.9
       },
       "filings_identified": true
     },
     {
-      "symbol": "GE",
-      "close": 174.33,
-      "return_pct": -0.52,
-      "volume_multiple": 1.2,
+      "symbol": "CAT",
+      "close": 299.73,
+      "return_pct": 1.4,
+      "volume_multiple": 1.4,
       "technicals": {
-        "sma_50": 175.65,
-        "sma_200": 169.37,
-        "rsi_14": 51.1
+        "sma_50": 304.5,
+        "sma_200": 310.15,
+        "rsi_14": 53.7
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "BLK",
+      "close": 830.05,
+      "return_pct": 0.56,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 810.95,
+        "sma_200": 770.32,
+        "rsi_14": 68.1
       },
       "filings_identified": false
     },
     {
       "symbol": "MRK",
-      "close": 112.98,
-      "return_pct": 2.43,
-      "volume_multiple": 1.3,
+      "close": 112.24,
+      "return_pct": 1.76,
+      "volume_multiple": 1.5,
       "technicals": {
-        "sma_50": 115.62,
-        "sma_200": 121.16,
-        "rsi_14": 29.1
+        "sma_50": 112.6,
+        "sma_200": 104.6,
+        "rsi_14": 65.2
       },
       "filings_identified": false
     },
     {
-      "symbol": "PG",
-      "close": 158.79,
-      "return_pct": 0.02,
-      "volume_multiple": 1.2,
+      "symbol": "MSFT",
+      "close": 407.12,
+      "return_pct": -1.97,
+      "volume_multiple": 1.4,
       "technicals": {
-        "sma_50": 157.25,
-        "sma_200": 157.5,
-        "rsi_14": 62.4
+        "sma_50": 414.44,
+        "sma_200": 433.0,
+        "rsi_14": 25.6
+      },
+      "filings_identified": true
+    },
+    {
+      "symbol": "NVDA",
+      "close": 481.77,
+      "return_pct": -0.68,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 496.38,
+        "sma_200": 466.31,
+        "rsi_14": 50.5
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "META",
+      "close": 477.98,
+      "return_pct": -1.47,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 461.29,
+        "sma_200": 511.25,
+        "rsi_14": 25.7
+      },
+      "filings_identified": true
+    },
+    {
+      "symbol": "HD",
+      "close": 390.62,
+      "return_pct": 1.36,
+      "volume_multiple": 1.4,
+      "technicals": {
+        "sma_50": 406.16,
+        "sma_200": 394.45,
+        "rsi_14": 72.3
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "MCD",
+      "close": 291.54,
+      "return_pct": -2.33,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 294.05,
+        "sma_200": 300.88,
+        "rsi_14": 57.8
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "XLF",
+      "close": 38.87,
+      "return_pct": 0.31,
+      "volume_multiple": 1.1,
+      "technicals": {
+        "sma_50": 38.6,
+        "sma_200": 41.05,
+        "rsi_14": 71.4
       },
       "filings_identified": false
     },
     {
       "symbol": "KO",
-      "close": 61.06,
-      "return_pct": -1.75,
+      "close": 63.11,
+      "return_pct": 1.54,
       "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 62.24,
-        "sma_200": 56.16,
-        "rsi_14": 74.4
+        "sma_50": 65.05,
+        "sma_200": 58.7,
+        "rsi_14": 73.2
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "COP",
+      "close": 105.66,
+      "return_pct": -2.61,
+      "volume_multiple": 1.5,
+      "technicals": {
+        "sma_50": 109.08,
+        "sma_200": 109.16,
+        "rsi_14": 39.2
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "SLB",
+      "close": 49.43,
+      "return_pct": 1.08,
+      "volume_multiple": 1.2,
+      "technicals": {
+        "sma_50": 49.73,
+        "sma_200": 46.8,
+        "rsi_14": 65.3
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "XOM",
+      "close": 105.16,
+      "return_pct": -0.65,
+      "volume_multiple": 1.2,
+      "technicals": {
+        "sma_50": 104.32,
+        "sma_200": 113.9,
+        "rsi_14": 64.2
       },
       "filings_identified": false
     }
   ],
   "evidence_items": [
     {
+      "event_id": "evt_earnings_8k_2026-03-06_5",
+      "source_name": "AAPL",
+      "source_type": "sec_filing_synthetic",
+      "published_ts": "2026-03-06T13:21:00Z",
+      "canonical_url": "synthetic://sec/edgar/data/0000320193/2026-03-06/AAPL/8-k",
+      "excerpt": "EPS: $5.21 vs $3.47 expected",
+      "doc_id": "AAPL-20260306",
+      "chunk_id": "evidence_earnings_8k_2026-03-06"
+    },
+    {
       "event_id": "evt_treasury_auction_2026-03-06_1",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-03-06T14:29:00Z",
+      "published_ts": "2026-03-06T13:54:00Z",
       "canonical_url": "synthetic://wire/2026-03-06/evt_treasury_auction_2026-03-06_1",
       "excerpt": "treasury_auction event recorded for 2026-03-06.",
       "doc_id": "SYNTHETICWIRE-20260306",
       "chunk_id": "evidence_treasury_auction_2026-03-06"
     },
     {
-      "event_id": "evt_treasury_auction_2026-03-06_6",
+      "event_id": "evt_regulatory_release_2026-03-06_2",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-03-06T16:46:00Z",
-      "canonical_url": "synthetic://wire/2026-03-06/evt_treasury_auction_2026-03-06_6",
-      "excerpt": "treasury_auction event recorded for 2026-03-06.",
+      "published_ts": "2026-03-06T16:31:00Z",
+      "canonical_url": "synthetic://wire/2026-03-06/evt_regulatory_release_2026-03-06_2",
+      "excerpt": "regulatory_release event recorded for 2026-03-06.",
       "doc_id": "SYNTHETICWIRE-20260306",
-      "chunk_id": "evidence_treasury_auction_2026-03-06"
+      "chunk_id": "evidence_regulatory_release_2026-03-06"
     },
     {
-      "event_id": "evt_corporate_action_2026-03-06_4",
-      "source_name": "SEC",
-      "source_type": "regulatory_filing_synthetic",
-      "published_ts": "2026-03-06T16:54:00Z",
-      "canonical_url": "synthetic://sec/edgar/data/0000000000/2026-03-06/XOM/event",
-      "excerpt": "Record date: 2026-03-24",
-      "doc_id": "SEC-20260306",
-      "chunk_id": "evidence_corporate_action_2026-03-06"
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-03-06_5",
-      "source_name": "GOOGL",
-      "source_type": "sec_filing_synthetic",
-      "published_ts": "2026-03-06T17:39:00Z",
-      "canonical_url": "synthetic://sec/edgar/data/0001652044/2026-03-06/GOOGL/8-k",
-      "excerpt": "EPS: $3.42 vs $4.29 expected",
-      "doc_id": "GOOGL-20260306",
-      "chunk_id": "evidence_earnings_8k_2026-03-06"
-    },
-    {
-      "event_id": "evt_treasury_auction_2026-03-06_2",
+      "event_id": "evt_fed_speech_2026-03-06_4",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-03-06T19:20:00Z",
-      "canonical_url": "synthetic://wire/2026-03-06/evt_treasury_auction_2026-03-06_2",
-      "excerpt": "treasury_auction event recorded for 2026-03-06.",
+      "published_ts": "2026-03-06T18:21:00Z",
+      "canonical_url": "synthetic://wire/2026-03-06/evt_fed_speech_2026-03-06_4",
+      "excerpt": "fed_speech event recorded for 2026-03-06.",
       "doc_id": "SYNTHETICWIRE-20260306",
-      "chunk_id": "evidence_treasury_auction_2026-03-06"
+      "chunk_id": "evidence_fed_speech_2026-03-06"
     },
     {
-      "event_id": "evt_economic_release_2026-03-06_3",
+      "event_id": "evt_regulatory_release_2026-03-06_3",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-03-06T20:19:00Z",
-      "canonical_url": "synthetic://wire/2026-03-06/evt_economic_release_2026-03-06_3",
-      "excerpt": "economic_release event recorded for 2026-03-06.",
+      "published_ts": "2026-03-06T18:24:00Z",
+      "canonical_url": "synthetic://wire/2026-03-06/evt_regulatory_release_2026-03-06_3",
+      "excerpt": "regulatory_release event recorded for 2026-03-06.",
       "doc_id": "SYNTHETICWIRE-20260306",
-      "chunk_id": "evidence_economic_release_2026-03-06"
+      "chunk_id": "evidence_regulatory_release_2026-03-06"
+    },
+    {
+      "event_id": "evt_fed_speech_2026-03-06_6",
+      "source_name": "SyntheticWire",
+      "source_type": "news_wire_synthetic",
+      "published_ts": "2026-03-06T20:29:00Z",
+      "canonical_url": "synthetic://wire/2026-03-06/evt_fed_speech_2026-03-06_6",
+      "excerpt": "fed_speech event recorded for 2026-03-06.",
+      "doc_id": "SYNTHETICWIRE-20260306",
+      "chunk_id": "evidence_fed_speech_2026-03-06"
     }
   ]
 }

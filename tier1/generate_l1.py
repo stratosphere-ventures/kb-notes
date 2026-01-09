@@ -286,137 +286,136 @@ def generate_governance(date: str, doc_id: str) -> Dict[str, Any]:
 # -----------------------------
 # Market outcomes (correlated, less duplication)
 # -----------------------------
+
 def generate_market_outcomes(
     date: str, prev_date: Optional[str], rng: random.Random, state: Dict[str, float]
 ) -> Dict[str, Any]:
-    # Use prev close if consecutive date in sorted list, else use baselines
     base = PREVIOUS_CLOSES.get(prev_date, {}).get("indices", {}) if prev_date else {}
-    base_spx = base.get("SPX", 4850.25)
-    base_ndx = base.get("NDX", 19245.75)
-    base_djia = base.get("DJIA", 38125.45)
-    base_rut = base.get("RUT", 2150.80)
-    base_qqq = base.get("QQQ", 475.32)
-    base_iwm = base.get("IWM", 215.45)
 
-    # Risk drives SPX/NDX; idiosyncratic adds noise
-    spx_ret = state["risk"] * 0.90 + rng.uniform(-0.40, 0.40)  # percent
-    ndx_ret = state["risk"] * 1.15 + rng.uniform(-0.55, 0.55)
-    djia_ret = state["risk"] * 0.70 + rng.uniform(-0.35, 0.35)
-    rut_ret = state["risk"] * 1.00 + rng.uniform(-0.60, 0.60)
-    qqq_ret = ndx_ret * 0.85 + rng.uniform(-0.25, 0.25)
-    iwm_ret = rut_ret * 0.80 + rng.uniform(-0.25, 0.25)
-
-    # Clamp to realistic daily ranges
-    def clamp(x, lo, hi):
+    def clamp(x: float, lo: float, hi: float) -> float:
         return max(lo, min(hi, x))
 
-    spx_ret = clamp(spx_ret, -2.5, 2.5)
-    ndx_ret = clamp(ndx_ret, -3.0, 3.0)
-    djia_ret = clamp(djia_ret, -2.2, 2.2)
-    rut_ret = clamp(rut_ret, -3.2, 3.2)
-    qqq_ret = clamp(qqq_ret, -3.0, 3.0)
-    iwm_ret = clamp(iwm_ret, -3.0, 3.0)
+    # Baselines (use prev close when available; else use static anchors)
+    base_spx  = float(base.get("SPX", 4850.25))
+    base_ndx  = float(base.get("NDX", 19245.75))
+    base_djia = float(base.get("DJIA", 38125.45))
+    base_rut  = float(base.get("RUT", 2150.80))
+    base_qqq  = float(base.get("QQQ", 475.32))
+    base_iwm  = float(base.get("IWM", 215.45))
+
+    # Risk drives SPX/NDX; idiosyncratic adds noise (percent returns)
+    spx_ret  = clamp(state["risk"] * 0.90 + rng.uniform(-0.40, 0.40), -2.5, 2.5)
+    ndx_ret  = clamp(state["risk"] * 1.15 + rng.uniform(-0.55, 0.55), -3.0, 3.0)
+    djia_ret = clamp(state["risk"] * 0.70 + rng.uniform(-0.35, 0.35), -2.2, 2.2)
+    rut_ret  = clamp(state["risk"] * 1.00 + rng.uniform(-0.60, 0.60), -3.2, 3.2)
+    qqq_ret  = clamp(ndx_ret * 0.85 + rng.uniform(-0.25, 0.25), -3.0, 3.0)
+    iwm_ret  = clamp(rut_ret * 0.80 + rng.uniform(-0.25, 0.25), -3.0, 3.0)
 
     # Convert to closes
-    spx_close = round(base_spx * (1 + spx_ret / 100), 2)
-    ndx_close = round(base_ndx * (1 + ndx_ret / 100), 2)
+    spx_close  = round(base_spx  * (1 + spx_ret / 100), 2)
+    ndx_close  = round(base_ndx  * (1 + ndx_ret / 100), 2)
     djia_close = round(base_djia * (1 + djia_ret / 100), 2)
-    rut_close = round(base_rut * (1 + rut_ret / 100), 2)
-    qqq_close = round(base_qqq * (1 + qqq_ret / 100), 2)
-    iwm_close = round(base_iwm * (1 + iwm_ret / 100), 2)
+    rut_close  = round(base_rut  * (1 + rut_ret / 100), 2)
+    qqq_close  = round(base_qqq  * (1 + qqq_ret / 100), 2)
+    iwm_close  = round(base_iwm  * (1 + iwm_ret / 100), 2)
 
-    # Rates/FX/commodities - Standardize units: yields use bps, currencies use %, commodities use %
-    ust_2y = round(4.15 + state["rates"] * 0.05 + rng.uniform(-0.03, 0.03), 2)
-    ust_10y = round(4.35 + state["rates"] * 0.08 + rng.uniform(-0.05, 0.05), 2)
-    # Yield changes in basis points (bps)
-    ust_2y_chg = round(rng.uniform(-3, 3), 1)  # ±3 bps
-    ust_10y_chg = round(rng.uniform(-5, 5), 1)  # ±5 bps
+    # High/low must bracket close; generate spreads first then apply
+    def make_range(close: float) -> Dict[str, float]:
+        up = rng.uniform(0.002, 0.010)
+        dn = rng.uniform(0.002, 0.010)
+        low = round(close * (1 - dn), 2)
+        high = round(close * (1 + up), 2)
+        # Guarantee strict ordering even after rounding
+        if low >= close:
+            low = round(close - max(0.01, close * 0.002), 2)
+        if high <= close:
+            high = round(close + max(0.01, close * 0.002), 2)
+        if low >= high:
+            high = round(low + 0.02, 2)
+        return {"low": low, "high": high}
 
-    dxy = round(102.45 + state["rates"] * 0.30 + rng.uniform(-0.25, 0.25), 2)
-    dxy_chg = round(rng.uniform(-0.30, 0.30), 2)
+    spx_rng = make_range(spx_close)
+    ndx_rng = make_range(ndx_close)
 
-    eurusd = round(1.0850 - state["rates"] * 0.004 + rng.uniform(-0.003, 0.003), 4)
-    eurusd_chg = round(rng.uniform(-0.15, 0.15), 2)
+    # -----------------------------
+    # Rates / FX / Commodities
+    # -----------------------------
+    # YIELDS ARE PERCENT LEVELS; CHANGES ARE IN BPS.
+    ust_2y_level = round(4.15 + state["rates"] * 0.06 + rng.uniform(-0.03, 0.03), 2)
+    ust_10y_level = round(4.35 + state["rates"] * 0.08 + rng.uniform(-0.05, 0.05), 2)
 
-    wti = round(75.80 + state["energy"] * 2.0 + rng.uniform(-1.2, 1.2), 2)
-    wti_chg = round((wti / 75.80 - 1) * 100, 2)
+    ust_2y_change_bps = round(rng.uniform(-6.0, 6.0), 1)   # daily bps move
+    ust_10y_change_bps = round(rng.uniform(-8.0, 8.0), 1)
 
-    gold = round(2045.30 + (-state["rates"]) * 10 + rng.uniform(-8, 8), 2)
-    gold_chg = round((gold / 2045.30 - 1) * 100, 2)
+    # DXY: index level + pct change
+    dxy_level = round(102.45 + state["rates"] * 0.30 + rng.uniform(-0.25, 0.25), 2)
+    dxy_change_pct = round(rng.uniform(-0.60, 0.60), 2)
 
-    # Vol inversely related to risk (mostly)
-    vix = round(14.25 + (-state["risk"]) * 1.2 + rng.uniform(-0.6, 0.6), 2)
-    vix9d = round(15.10 + (-state["risk"]) * 1.0 + rng.uniform(-0.6, 0.6), 2)
-    vix_chg = round(rng.uniform(-1.0, 1.0), 2)
-    vix9d_chg = round(rng.uniform(-1.0, 1.0), 2)
+    # EURUSD: ratio + abs + pct change
+    eurusd_level = round(1.0850 - state["rates"] * 0.004 + rng.uniform(-0.003, 0.003), 4)
+    eurusd_change_abs = round(rng.uniform(-0.0060, 0.0060), 4)
+    eurusd_change_pct = round((eurusd_change_abs / max(1e-9, eurusd_level - eurusd_change_abs)) * 100, 2)
+
+    # WTI: USD level + pct change
+    wti_level = round(75.80 + state["energy"] * 2.0 + rng.uniform(-1.2, 1.2), 2)
+    wti_change_pct = round((wti_level / 75.80 - 1) * 100, 2)
+
+    # Gold: USD level + pct change
+    gold_level = round(2045.30 + (-state["rates"]) * 10 + rng.uniform(-8, 8), 2)
+    gold_change_pct = round((gold_level / 2045.30 - 1) * 100, 2)
+
+    # Volatility: index levels + point change (not percent)
+    vix_level = round(14.25 + (-state["risk"]) * 1.2 + rng.uniform(-0.6, 0.6), 2)
+    vix9d_level = round(15.10 + (-state["risk"]) * 1.0 + rng.uniform(-0.6, 0.6), 2)
+    vix_change_pts = round(rng.uniform(-1.5, 1.5), 2)
+    vix9d_change_pts = round(rng.uniform(-1.5, 1.5), 2)
 
     adv = rng.randint(1500, 3500)
     dec = rng.randint(1500, 3500)
-    pct_above_200 = clamp(50 + spx_ret * 5 + rng.uniform(-5, 5), 30, 80)
-    pct_above_200 = round(pct_above_200, 1)
+    pct_above_200 = round(clamp(50 + spx_ret * 5 + rng.uniform(-5, 5), 30, 80), 1)
 
-    # L1-neutral headline (no sector leadership, no causality)
-    headline = f"US equities: SPX {spx_ret:+.2f}%, NDX {ndx_ret:+.2f}%, DJIA {djia_ret:+.2f}%, RUT {rut_ret:+.2f}%."
+    headline = (
+        f"US equities: SPX {spx_ret:+.2f}%, NDX {ndx_ret:+.2f}%, "
+        f"DJIA {djia_ret:+.2f}%, RUT {rut_ret:+.2f}%."
+    )
 
     out = {
         "headline_neutral": headline,
         "indices": [
             {
                 "symbol": "SPX",
+                "prev_close": round(base_spx, 2),
                 "close": spx_close,
                 "return_pct": round(spx_ret, 2),
-                "high": round(spx_close * (1 + rng.uniform(0.002, 0.010)), 2),
-                "low": round(spx_close * (1 - rng.uniform(0.002, 0.010)), 2),
+                **spx_rng,
             },
             {
                 "symbol": "NDX",
+                "prev_close": round(base_ndx, 2),
                 "close": ndx_close,
                 "return_pct": round(ndx_ret, 2),
-                "high": round(ndx_close * (1 + rng.uniform(0.002, 0.010)), 2),
-                "low": round(ndx_close * (1 - rng.uniform(0.002, 0.010)), 2),
+                **ndx_rng,
             },
-            {"symbol": "RUT", "close": rut_close, "return_pct": round(rut_ret, 2)},
-            {"symbol": "DJIA", "close": djia_close, "return_pct": round(djia_ret, 2)},
-            {"symbol": "QQQ", "close": qqq_close, "return_pct": round(qqq_ret, 2)},
-            {"symbol": "IWM", "close": iwm_close, "return_pct": round(iwm_ret, 2)},
+            {"symbol": "RUT", "prev_close": round(base_rut, 2), "close": rut_close, "return_pct": round(rut_ret, 2)},
+            {"symbol": "DJIA", "prev_close": round(base_djia, 2), "close": djia_close, "return_pct": round(djia_ret, 2)},
+            {"symbol": "QQQ", "prev_close": round(base_qqq, 2), "close": qqq_close, "return_pct": round(qqq_ret, 2)},
+            {"symbol": "IWM", "prev_close": round(base_iwm, 2), "close": iwm_close, "return_pct": round(iwm_ret, 2)},
         ],
         "rates_fx_commodities": [
-            {"symbol": "UST 2Y", "value": ust_2y, "unit": "bps", "change": ust_2y_chg},
-            {
-                "symbol": "UST 10Y",
-                "value": ust_10y,
-                "unit": "bps",
-                "change": ust_10y_chg,
-            },
-            {"symbol": "DXY", "value": dxy, "unit": "index", "change": dxy_chg},
-            {
-                "symbol": "EURUSD",
-                "value": eurusd,
-                "unit": "index",
-                "change": eurusd_chg,
-            },
-            {"symbol": "WTI Crude", "value": wti, "unit": "usd", "change": wti_chg},
-            {"symbol": "Gold", "value": gold, "unit": "usd", "change": gold_chg},
+            {"symbol": "UST 2Y", "value": ust_2y_level, "unit": "pct", "change_bps": ust_2y_change_bps},
+            {"symbol": "UST 10Y", "value": ust_10y_level, "unit": "pct", "change_bps": ust_10y_change_bps},
+            {"symbol": "DXY", "value": dxy_level, "unit": "index", "change_pct": dxy_change_pct},
+            {"symbol": "EURUSD", "value": eurusd_level, "unit": "ratio", "change_abs": eurusd_change_abs, "change_pct": eurusd_change_pct},
+            {"symbol": "WTI Crude", "value": wti_level, "unit": "usd", "change_pct": wti_change_pct},
+            {"symbol": "Gold", "value": gold_level, "unit": "usd", "change_pct": gold_change_pct},
         ],
         "volatility": [
-            {"symbol": "VIX", "close": vix, "change": vix_chg},
-            {"symbol": "VIX9D", "close": vix9d, "change": vix9d_chg},
+            {"symbol": "VIX", "close": vix_level, "change_pts": vix_change_pts},
+            {"symbol": "VIX9D", "close": vix9d_level, "change_pts": vix9d_change_pts},
         ],
-        "breadth": {
-            "advancers": adv,
-            "decliners": dec,
-            "pct_above_200dma": pct_above_200,
-        },
+        "breadth": {"advancers": adv, "decliners": dec, "pct_above_200dma": pct_above_200},
     }
     return out
-
-
-# -----------------------------
-# Events (keep yours, but fix URL schemes where needed)
-# -----------------------------
-# Minimal changes here: fix corporate_action SEC URL to use correct company CIK or synthetic scheme.
-# For brevity, we only patch the two problematic URL patterns: corporate_action and earnings_8k.
-
 
 def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
     # Keep your existing variety, but make IDs stable-ish
@@ -517,7 +516,6 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
 
     events.sort(key=lambda x: x["published_ts"])
     return events
-
 
 # -----------------------------
 # Tickers/sectors/movers (single generation per day)

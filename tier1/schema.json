@@ -220,10 +220,20 @@
                   "bps",
                   "usd",
                   "index",
-                  "other"
+                  "other",
+                  "ratio"
                 ]
               },
               "change": {
+                "type": "number"
+              },
+              "change_bps": {
+                "type": "number"
+              },
+              "change_pct": {
+                "type": "number"
+              },
+              "change_abs": {
                 "type": "number"
               }
             }
@@ -246,6 +256,9 @@
                 "type": "number"
               },
               "change": {
+                "type": "number"
+              },
+              "change_pts": {
                 "type": "number"
               }
             }
@@ -383,10 +396,23 @@
             "minLength": 1
           },
           "move_pct": {
-            "type": "number"
-          },
+                "type": "number"
+              },
           "move_points": {
             "type": "number"
+          },
+          "t0_ts": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "start_px": {
+            "type": "number"
+          },
+          "end_px": {
+            "type": "number"
+          },
+          "bar_resolution": {
+            "type": "string"
           }
         }
       }

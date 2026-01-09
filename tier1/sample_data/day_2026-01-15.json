@@ -16,7 +16,7 @@
       "impact_v1.0.1"
     ],
     "pipeline_version": "v2.2.0",
-    "doc_id": "49ca6f59-3332-466a-bcdf-cafafe2f2edc",
+    "doc_id": "457cd50d-613d-4f51-ba20-03b91c60a7d2",
     "doc_key": "market_wrap/us/2026-01-15",
     "is_current": true,
     "is_active": true,
@@ -36,104 +36,111 @@
     ]
   },
   "market_outcomes": {
-    "headline_neutral": "US equities: SPX +0.49%, NDX +0.58%, DJIA +0.23%, RUT +0.68%.",
+    "headline_neutral": "US equities: SPX +0.03%, NDX +0.39%, DJIA +0.05%, RUT +0.30%.",
     "indices": [
       {
         "symbol": "SPX",
-        "close": 4915.07,
-        "return_pct": 0.49,
-        "high": 4951.93,
-        "low": 4866.14
+        "prev_close": 4811.15,
+        "close": 4812.55,
+        "return_pct": 0.03,
+        "low": 4787.75,
+        "high": 4822.7
       },
       {
         "symbol": "NDX",
-        "close": 19428.59,
-        "return_pct": 0.58,
-        "high": 19501.08,
-        "low": 19253.6
+        "prev_close": 19069.28,
+        "close": 19142.76,
+        "return_pct": 0.39,
+        "low": 18963.4,
+        "high": 19266.33
       },
       {
         "symbol": "RUT",
-        "close": 2174.88,
-        "return_pct": 0.68
+        "prev_close": 2145.77,
+        "close": 2152.28,
+        "return_pct": 0.3
       },
       {
         "symbol": "DJIA",
-        "close": 38428.01,
-        "return_pct": 0.23
+        "prev_close": 37979.4,
+        "close": 37999.7,
+        "return_pct": 0.05
       },
       {
         "symbol": "QQQ",
-        "close": 479.06,
-        "return_pct": 0.69
+        "prev_close": 471.7,
+        "close": 474.21,
+        "return_pct": 0.53
       },
       {
         "symbol": "IWM",
-        "close": 217.27,
-        "return_pct": 0.4
+        "prev_close": 215.08,
+        "close": 215.19,
+        "return_pct": 0.05
       }
     ],
     "rates_fx_commodities": [
       {
         "symbol": "UST 2Y",
-        "value": 4.15,
-        "unit": "bps",
-        "change": -0.0
+        "value": 4.12,
+        "unit": "pct",
+        "change_bps": 0.2
       },
       {
         "symbol": "UST 10Y",
-        "value": 4.32,
-        "unit": "bps",
-        "change": -0.5
+        "value": 4.33,
+        "unit": "pct",
+        "change_bps": 1.3
       },
       {
         "symbol": "DXY",
-        "value": 102.31,
+        "value": 102.4,
         "unit": "index",
-        "change": -0.03
+        "change_pct": -0.1
       },
       {
         "symbol": "EURUSD",
-        "value": 1.085,
-        "unit": "index",
-        "change": 0.13
+        "value": 1.0866,
+        "unit": "ratio",
+        "change_abs": -0.0033,
+        "change_pct": -0.3
       },
       {
         "symbol": "WTI Crude",
-        "value": 77.54,
+        "value": 77.1,
         "unit": "usd",
-        "change": 2.3
+        "change_pct": 1.72
       },
       {
         "symbol": "Gold",
-        "value": 2042.0,
+        "value": 2045.28,
         "unit": "usd",
-        "change": -0.16
+        "change_pct": -0.0
       }
     ],
     "volatility": [
       {
         "symbol": "VIX",
-        "close": 13.57,
-        "change": -0.67
+        "close": 14.07,
+        "change_pts": -0.58
       },
       {
         "symbol": "VIX9D",
-        "close": 14.92,
-        "change": -0.35
+        "close": 15.31,
+        "change_pts": 1.27
       }
     ],
     "breadth": {
-      "advancers": 2498,
-      "decliners": 1971,
-      "pct_above_200dma": 47.8
+      "advancers": 3027,
+      "decliners": 1907,
+      "pct_above_200dma": 49.0
     }
   },
   "events": [
     {
       "event_id": "evt_economic_release_2026-01-15_3",
       "event_type": "economic_release",
-      "published_ts": "2026-01-15T13:39:00Z",
+      "published_ts": "2026-01-15T13:26:00Z",
       "market_session": "pre",
       "facts": [
         "economic_release event recorded for 2026-01-15."
@@ -149,36 +156,38 @@
       ]
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
-      "event_type": "regulatory_release",
-      "published_ts": "2026-01-15T15:48:00Z",
-      "market_session": "regular",
+      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "event_type": "earnings_8k",
+      "published_ts": "2026-01-15T13:47:00Z",
+      "market_session": "post",
       "facts": [
-        "regulatory_release event recorded for 2026-01-15."
+        "EPS: $2.98 vs $3.35 expected",
+        "Revenue: $18.8B vs $41.5B expected"
       ],
       "source": {
-        "name": "SyntheticWire",
-        "source_type": "news_wire_synthetic",
-        "canonical_url": "synthetic://wire/2026-01-15/evt_regulatory_release_2026-01-15_1"
+        "name": "META",
+        "source_type": "sec_filing_synthetic",
+        "canonical_url": "synthetic://sec/edgar/data/0001326801/2026-01-15/META/8-k"
       },
       "entities": [
+        "META",
         "SPX",
-        "NDX"
+        "Communication Services"
       ]
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
-      "event_type": "earnings_8k",
-      "published_ts": "2026-01-15T16:56:00Z",
-      "market_session": "post",
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "event_type": "corporate_action",
+      "published_ts": "2026-01-15T14:26:00Z",
+      "market_session": "regular",
       "facts": [
-        "EPS: $5.24 vs $5.85 expected",
-        "Revenue: $18.0B vs $57.7B expected"
+        "JPM announced a corporate action filing.",
+        "Record date: 2026-02-02"
       ],
       "source": {
-        "name": "JPM",
-        "source_type": "sec_filing_synthetic",
-        "canonical_url": "synthetic://sec/edgar/data/0000019617/2026-01-15/JPM/8-k"
+        "name": "SEC",
+        "source_type": "regulatory_filing_synthetic",
+        "canonical_url": "synthetic://sec/edgar/data/0000019617/2026-01-15/JPM/event"
       },
       "entities": [
         "JPM",
@@ -187,23 +196,59 @@
       ]
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
-      "event_type": "earnings_8k",
-      "published_ts": "2026-01-15T18:09:00Z",
-      "market_session": "post",
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "event_type": "corporate_action",
+      "published_ts": "2026-01-15T16:52:00Z",
+      "market_session": "regular",
       "facts": [
-        "EPS: $1.72 vs $3.33 expected",
-        "Revenue: $29.2B vs $44.1B expected"
+        "MSFT announced a corporate action filing.",
+        "Record date: 2026-02-02"
       ],
       "source": {
-        "name": "AAPL",
-        "source_type": "sec_filing_synthetic",
-        "canonical_url": "synthetic://sec/edgar/data/0000320193/2026-01-15/AAPL/8-k"
+        "name": "SEC",
+        "source_type": "regulatory_filing_synthetic",
+        "canonical_url": "synthetic://sec/edgar/data/0000789019/2026-01-15/MSFT/event"
       },
       "entities": [
-        "AAPL",
+        "MSFT",
         "SPX",
         "Technology"
+      ]
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_4",
+      "event_type": "treasury_auction",
+      "published_ts": "2026-01-15T17:27:00Z",
+      "market_session": "regular",
+      "facts": [
+        "treasury_auction event recorded for 2026-01-15."
+      ],
+      "source": {
+        "name": "SyntheticWire",
+        "source_type": "news_wire_synthetic",
+        "canonical_url": "synthetic://wire/2026-01-15/evt_treasury_auction_2026-01-15_4"
+      },
+      "entities": [
+        "SPX",
+        "NDX"
+      ]
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_5",
+      "event_type": "treasury_auction",
+      "published_ts": "2026-01-15T18:22:00Z",
+      "market_session": "regular",
+      "facts": [
+        "treasury_auction event recorded for 2026-01-15."
+      ],
+      "source": {
+        "name": "SyntheticWire",
+        "source_type": "news_wire_synthetic",
+        "canonical_url": "synthetic://wire/2026-01-15/evt_treasury_auction_2026-01-15_5"
+      },
+      "entities": [
+        "SPX",
+        "NDX"
       ]
     }
   ],
@@ -212,257 +257,353 @@
       "event_id": "evt_economic_release_2026-01-15_3",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.365
+      "move_pct": 0.047
     },
     {
       "event_id": "evt_economic_release_2026-01-15_3",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.315
+      "move_pct": 0.375
     },
     {
       "event_id": "evt_economic_release_2026-01-15_3",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": -0.302
+      "move_pct": 0.146
     },
     {
       "event_id": "evt_economic_release_2026-01-15_3",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": 0.159
+      "move_pct": 0.06
     },
     {
       "event_id": "evt_economic_release_2026-01-15_3",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.214
+      "move_pct": -0.284
+    },
+    {
+      "event_id": "evt_economic_release_2026-01-15_3",
+      "instrument": "UNH",
+      "window": "pre_to_close",
+      "move_pct": 0.533
     },
     {
       "event_id": "evt_economic_release_2026-01-15_3",
       "instrument": "PXD",
       "window": "t0_to_t+30m",
-      "move_pct": -0.236
+      "move_pct": 0.264
     },
     {
       "event_id": "evt_economic_release_2026-01-15_3",
-      "instrument": "AAPL",
-      "window": "t0_to_t+30m",
-      "move_pct": -0.33
-    },
-    {
-      "event_id": "evt_economic_release_2026-01-15_3",
-      "instrument": "AMZN",
+      "instrument": "PFE",
       "window": "t0_to_t+60m",
-      "move_pct": 0.548
+      "move_pct": 0.845
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
+      "event_id": "evt_earnings_8k_2026-01-15_2",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.117
+      "move_pct": -0.603
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
+      "event_id": "evt_earnings_8k_2026-01-15_2",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.576
+      "move_pct": -0.343
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
+      "event_id": "evt_earnings_8k_2026-01-15_2",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": -0.54
+      "move_pct": -0.479
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
+      "event_id": "evt_earnings_8k_2026-01-15_2",
       "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.389
+    },
+    {
+      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.412
+    },
+    {
+      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "instrument": "BAC",
+      "window": "pre_to_close",
+      "move_pct": -0.242
+    },
+    {
+      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "instrument": "ABT",
+      "window": "t0_to_t+30m",
+      "move_pct": 0.135
+    },
+    {
+      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "instrument": "SLB",
+      "window": "t0_to_t+30m",
+      "move_pct": 0.429
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.206
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.125
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.099
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.271
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.025
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "PXD",
+      "window": "t0_to_t+30m",
+      "move_pct": 0.279
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "TMO",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.218
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "instrument": "SLB",
+      "window": "pre_to_close",
+      "move_pct": -0.653
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.007
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "NDX",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.01
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "DJIA",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.238
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "RUT",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.523
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "VIX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.161
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "TMO",
+      "window": "t0_to_t+60m",
+      "move_pct": 0.302
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "PG",
+      "window": "pre_to_close",
+      "move_pct": -0.393
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "instrument": "BAC",
+      "window": "t0_to_t+60m",
+      "move_pct": -1.079
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_4",
+      "instrument": "SPX",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.328
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_4",
+      "instrument": "NDX",
       "window": "t0_to_t+60m",
       "move_pct": -0.517
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
-      "instrument": "VIX",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.549
-    },
-    {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
-      "instrument": "AMZN",
-      "window": "pre_to_close",
-      "move_pct": 0.813
-    },
-    {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
-      "instrument": "MS",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.792
-    },
-    {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
-      "instrument": "SLB",
-      "window": "pre_to_close",
-      "move_pct": -0.277
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
-      "instrument": "SPX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.42
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
-      "instrument": "NDX",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.011
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "event_id": "evt_treasury_auction_2026-01-15_4",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": 0.205
+      "move_pct": -0.272
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "event_id": "evt_treasury_auction_2026-01-15_4",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": 0.138
+      "move_pct": -0.496
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "event_id": "evt_treasury_auction_2026-01-15_4",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.543
+      "move_pct": 0.494
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
-      "instrument": "PFE",
-      "window": "t0_to_t+30m",
-      "move_pct": -0.784
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "event_id": "evt_treasury_auction_2026-01-15_4",
       "instrument": "SLB",
       "window": "pre_to_close",
-      "move_pct": 0.647
+      "move_pct": -1.208
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
-      "instrument": "JPM",
-      "window": "t0_to_t+60m",
-      "move_pct": 0.119
+      "event_id": "evt_treasury_auction_2026-01-15_4",
+      "instrument": "TMO",
+      "window": "t0_to_t+30m",
+      "move_pct": -1.275
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
+      "event_id": "evt_treasury_auction_2026-01-15_4",
+      "instrument": "ABT",
+      "window": "pre_to_close",
+      "move_pct": -0.886
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_5",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.547
+      "move_pct": -0.538
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
+      "event_id": "evt_treasury_auction_2026-01-15_5",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": 0.18
+      "move_pct": -0.75
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
+      "event_id": "evt_treasury_auction_2026-01-15_5",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": 0.032
+      "move_pct": -0.274
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
+      "event_id": "evt_treasury_auction_2026-01-15_5",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": 0.473
+      "move_pct": -0.41
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
+      "event_id": "evt_treasury_auction_2026-01-15_5",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.73
+      "move_pct": 0.648
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
-      "instrument": "PXD",
-      "window": "pre_to_close",
-      "move_pct": 0.95
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
-      "instrument": "AAPL",
+      "event_id": "evt_treasury_auction_2026-01-15_5",
+      "instrument": "UNH",
       "window": "t0_to_t+30m",
-      "move_pct": 1.365
+      "move_pct": -1.12
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
-      "instrument": "SLB",
+      "event_id": "evt_treasury_auction_2026-01-15_5",
+      "instrument": "BAC",
       "window": "t0_to_t+30m",
-      "move_pct": 1.408
+      "move_pct": -1.505
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_5",
+      "instrument": "TMO",
+      "window": "t0_to_t+60m",
+      "move_pct": -0.165
     }
   ],
   "movers": {
     "top_gainers": [
       {
-        "symbol": "GE",
-        "return_pct": 2.94,
-        "sector": "Industrials",
+        "symbol": "PFE",
+        "return_pct": 2.24,
+        "sector": "Healthcare",
         "volume_multiple": 1.6
       },
       {
-        "symbol": "MS",
-        "return_pct": 2.91,
-        "sector": "Financials",
-        "volume_multiple": 1.5
-      },
-      {
-        "symbol": "META",
-        "return_pct": 1.65,
-        "sector": "Communication Services",
-        "volume_multiple": 1.2
-      },
-      {
-        "symbol": "AMZN",
-        "return_pct": 1.61,
-        "sector": "Consumer Discretionary",
+        "symbol": "UNH",
+        "return_pct": 2.21,
+        "sector": "Healthcare",
         "volume_multiple": 1.3
       },
       {
-        "symbol": "PFE",
-        "return_pct": 1.57,
-        "sector": "Healthcare",
+        "symbol": "SLB",
+        "return_pct": 1.66,
+        "sector": "Energy",
         "volume_multiple": 1.4
+      },
+      {
+        "symbol": "PXD",
+        "return_pct": 1.14,
+        "sector": "Energy",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "TSLA",
+        "return_pct": 0.49,
+        "sector": "Consumer Discretionary",
+        "volume_multiple": 1.3
       }
     ],
     "top_decliners": [
       {
-        "symbol": "SLB",
-        "return_pct": 1.38,
-        "sector": "Energy",
-        "volume_multiple": 1.3
-      },
-      {
-        "symbol": "AAPL",
-        "return_pct": 1.34,
-        "sector": "Technology",
-        "volume_multiple": 1.2
-      },
-      {
-        "symbol": "PXD",
-        "return_pct": 1.29,
-        "sector": "Energy",
-        "volume_multiple": 1.3
-      },
-      {
         "symbol": "BAC",
-        "return_pct": 1.17,
+        "return_pct": 0.22,
         "sector": "Financials",
         "volume_multiple": 1.2
       },
       {
-        "symbol": "UPS",
-        "return_pct": -0.92,
-        "sector": "Industrials",
+        "symbol": "JNJ",
+        "return_pct": -0.38,
+        "sector": "Healthcare",
+        "volume_multiple": 1.1
+      },
+      {
+        "symbol": "ABT",
+        "return_pct": -1.25,
+        "sector": "Healthcare",
+        "volume_multiple": 1.2
+      },
+      {
+        "symbol": "TMO",
+        "return_pct": -1.48,
+        "sector": "Healthcare",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "PG",
+        "return_pct": -1.57,
+        "sector": "Consumer Staples",
         "volume_multiple": 1.4
       }
     ]
@@ -470,170 +611,158 @@
   "sectors": [
     {
       "name": "XLK",
-      "return_pct": 0.54,
-      "volume_multiple": 1.1
+      "return_pct": 1.55,
+      "volume_multiple": 1.33
     },
     {
       "name": "XLF",
-      "return_pct": 0.97,
-      "volume_multiple": 1.25
+      "return_pct": 0.04,
+      "volume_multiple": 1.23
     },
     {
       "name": "XLE",
-      "return_pct": 1.0,
-      "volume_multiple": 1.3
+      "return_pct": 0.6,
+      "volume_multiple": 1.2
     },
     {
       "name": "XLU",
-      "return_pct": -0.37,
-      "volume_multiple": 1.1
+      "return_pct": 0.95,
+      "volume_multiple": 1.16
     },
     {
       "name": "XLRE",
-      "return_pct": 1.56,
+      "return_pct": 0.89,
       "volume_multiple": 1.36
     },
     {
       "name": "XLY",
-      "return_pct": 0.42,
-      "volume_multiple": 1.18
+      "return_pct": 0.57,
+      "volume_multiple": 1.26
     },
     {
       "name": "XLC",
-      "return_pct": 0.22,
-      "volume_multiple": 1.17
+      "return_pct": 0.71,
+      "volume_multiple": 1.2
     }
   ],
   "tickers": [
     {
-      "symbol": "JPM",
-      "close": 201.78,
-      "return_pct": 1.53,
+      "symbol": "UNH",
+      "close": 537.4,
+      "return_pct": 2.21,
       "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 205.76,
-        "sma_200": 219.88,
-        "rsi_14": 73.6
+        "sma_50": 527.67,
+        "sma_200": 575.28,
+        "rsi_14": 45.0
       },
       "filings_identified": false
     },
     {
-      "symbol": "SLB",
-      "close": 49.57,
-      "return_pct": 1.38,
-      "volume_multiple": 1.3,
-      "technicals": {
-        "sma_50": 48.57,
-        "sma_200": 49.63,
-        "rsi_14": 37.6
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "BAC",
-      "close": 38.9,
-      "return_pct": 1.17,
+      "symbol": "ABT",
+      "close": 114.15,
+      "return_pct": -1.25,
       "volume_multiple": 1.2,
       "technicals": {
-        "sma_50": 37.5,
-        "sma_200": 40.9,
-        "rsi_14": 39.0
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "GE",
-      "close": 180.4,
-      "return_pct": 2.94,
-      "volume_multiple": 1.6,
-      "technicals": {
-        "sma_50": 175.79,
-        "sma_200": 191.83,
-        "rsi_14": 40.1
-      },
-      "filings_identified": true
-    },
-    {
-      "symbol": "PXD",
-      "close": 248.98,
-      "return_pct": 1.29,
-      "volume_multiple": 1.3,
-      "technicals": {
-        "sma_50": 246.96,
-        "sma_200": 254.41,
-        "rsi_14": 29.8
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "AMZN",
-      "close": 188.23,
-      "return_pct": 1.61,
-      "volume_multiple": 1.3,
-      "technicals": {
-        "sma_50": 188.09,
-        "sma_200": 182.92,
-        "rsi_14": 50.8
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "AAPL",
-      "close": 198.47,
-      "return_pct": 1.34,
-      "volume_multiple": 1.2,
-      "technicals": {
-        "sma_50": 204.17,
-        "sma_200": 183.91,
-        "rsi_14": 65.9
+        "sma_50": 112.95,
+        "sma_200": 124.54,
+        "rsi_14": 46.7
       },
       "filings_identified": false
     },
     {
       "symbol": "PFE",
-      "close": 29.86,
-      "return_pct": 1.57,
-      "volume_multiple": 1.4,
+      "close": 30.06,
+      "return_pct": 2.24,
+      "volume_multiple": 1.6,
       "technicals": {
-        "sma_50": 30.2,
-        "sma_200": 29.08,
-        "rsi_14": 31.6
+        "sma_50": 28.92,
+        "sma_200": 32.22,
+        "rsi_14": 74.7
+      },
+      "filings_identified": true
+    },
+    {
+      "symbol": "TSLA",
+      "close": 246.5,
+      "return_pct": 0.49,
+      "volume_multiple": 1.3,
+      "technicals": {
+        "sma_50": 238.74,
+        "sma_200": 226.82,
+        "rsi_14": 48.9
       },
       "filings_identified": false
     },
     {
-      "symbol": "UPS",
-      "close": 143.96,
-      "return_pct": -0.92,
+      "symbol": "TMO",
+      "close": 576.51,
+      "return_pct": -1.48,
       "volume_multiple": 1.4,
       "technicals": {
-        "sma_50": 148.79,
-        "sma_200": 152.6,
-        "rsi_14": 62.4
+        "sma_50": 588.04,
+        "sma_200": 582.34,
+        "rsi_14": 63.2
+      },
+      "filings_identified": true
+    },
+    {
+      "symbol": "PXD",
+      "close": 248.61,
+      "return_pct": 1.14,
+      "volume_multiple": 1.4,
+      "technicals": {
+        "sma_50": 247.42,
+        "sma_200": 248.29,
+        "rsi_14": 53.8
       },
       "filings_identified": false
     },
     {
-      "symbol": "META",
-      "close": 493.09,
-      "return_pct": 1.65,
+      "symbol": "BAC",
+      "close": 38.54,
+      "return_pct": 0.22,
       "volume_multiple": 1.2,
       "technicals": {
-        "sma_50": 505.89,
-        "sma_200": 539.82,
-        "rsi_14": 46.1
+        "sma_50": 38.02,
+        "sma_200": 38.95,
+        "rsi_14": 35.5
       },
       "filings_identified": false
     },
     {
-      "symbol": "MS",
-      "close": 98.59,
-      "return_pct": 2.91,
-      "volume_multiple": 1.5,
+      "symbol": "SLB",
+      "close": 49.71,
+      "return_pct": 1.66,
+      "volume_multiple": 1.4,
       "technicals": {
-        "sma_50": 98.11,
-        "sma_200": 89.61,
-        "rsi_14": 58.2
+        "sma_50": 49.88,
+        "sma_200": 49.65,
+        "rsi_14": 72.3
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "PG",
+      "close": 156.26,
+      "return_pct": -1.57,
+      "volume_multiple": 1.4,
+      "technicals": {
+        "sma_50": 155.11,
+        "sma_200": 152.65,
+        "rsi_14": 31.8
+      },
+      "filings_identified": false
+    },
+    {
+      "symbol": "JNJ",
+      "close": 167.86,
+      "return_pct": -0.38,
+      "volume_multiple": 1.1,
+      "technicals": {
+        "sma_50": 173.57,
+        "sma_200": 161.86,
+        "rsi_14": 73.6
       },
       "filings_identified": false
     }
@@ -643,41 +772,61 @@
       "event_id": "evt_economic_release_2026-01-15_3",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-01-15T13:39:00Z",
+      "published_ts": "2026-01-15T13:26:00Z",
       "canonical_url": "synthetic://wire/2026-01-15/evt_economic_release_2026-01-15_3",
       "excerpt": "economic_release event recorded for 2026-01-15.",
       "doc_id": "SYNTHETICWIRE-20260115",
       "chunk_id": "evidence_economic_release_2026-01-15"
     },
     {
-      "event_id": "evt_regulatory_release_2026-01-15_1",
+      "event_id": "evt_earnings_8k_2026-01-15_2",
+      "source_name": "META",
+      "source_type": "sec_filing_synthetic",
+      "published_ts": "2026-01-15T13:47:00Z",
+      "canonical_url": "synthetic://sec/edgar/data/0001326801/2026-01-15/META/8-k",
+      "excerpt": "EPS: $2.98 vs $3.35 expected",
+      "doc_id": "META-20260115",
+      "chunk_id": "evidence_earnings_8k_2026-01-15"
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_1",
+      "source_name": "SEC",
+      "source_type": "regulatory_filing_synthetic",
+      "published_ts": "2026-01-15T14:26:00Z",
+      "canonical_url": "synthetic://sec/edgar/data/0000019617/2026-01-15/JPM/event",
+      "excerpt": "JPM announced a corporate action filing.",
+      "doc_id": "SEC-20260115",
+      "chunk_id": "evidence_corporate_action_2026-01-15"
+    },
+    {
+      "event_id": "evt_corporate_action_2026-01-15_6",
+      "source_name": "SEC",
+      "source_type": "regulatory_filing_synthetic",
+      "published_ts": "2026-01-15T16:52:00Z",
+      "canonical_url": "synthetic://sec/edgar/data/0000789019/2026-01-15/MSFT/event",
+      "excerpt": "MSFT announced a corporate action filing.",
+      "doc_id": "SEC-20260115",
+      "chunk_id": "evidence_corporate_action_2026-01-15"
+    },
+    {
+      "event_id": "evt_treasury_auction_2026-01-15_4",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-01-15T15:48:00Z",
-      "canonical_url": "synthetic://wire/2026-01-15/evt_regulatory_release_2026-01-15_1",
-      "excerpt": "regulatory_release event recorded for 2026-01-15.",
+      "published_ts": "2026-01-15T17:27:00Z",
+      "canonical_url": "synthetic://wire/2026-01-15/evt_treasury_auction_2026-01-15_4",
+      "excerpt": "treasury_auction event recorded for 2026-01-15.",
       "doc_id": "SYNTHETICWIRE-20260115",
-      "chunk_id": "evidence_regulatory_release_2026-01-15"
+      "chunk_id": "evidence_treasury_auction_2026-01-15"
     },
     {
-      "event_id": "evt_earnings_8k_2026-01-15_2",
-      "source_name": "JPM",
-      "source_type": "sec_filing_synthetic",
-      "published_ts": "2026-01-15T16:56:00Z",
-      "canonical_url": "synthetic://sec/edgar/data/0000019617/2026-01-15/JPM/8-k",
-      "excerpt": "Revenue: $18.0B vs $57.7B expected",
-      "doc_id": "JPM-20260115",
-      "chunk_id": "evidence_earnings_8k_2026-01-15"
-    },
-    {
-      "event_id": "evt_earnings_8k_2026-01-15_4",
-      "source_name": "AAPL",
-      "source_type": "sec_filing_synthetic",
-      "published_ts": "2026-01-15T18:09:00Z",
-      "canonical_url": "synthetic://sec/edgar/data/0000320193/2026-01-15/AAPL/8-k",
-      "excerpt": "Revenue: $29.2B vs $44.1B expected",
-      "doc_id": "AAPL-20260115",
-      "chunk_id": "evidence_earnings_8k_2026-01-15"
+      "event_id": "evt_treasury_auction_2026-01-15_5",
+      "source_name": "SyntheticWire",
+      "source_type": "news_wire_synthetic",
+      "published_ts": "2026-01-15T18:22:00Z",
+      "canonical_url": "synthetic://wire/2026-01-15/evt_treasury_auction_2026-01-15_5",
+      "excerpt": "treasury_auction event recorded for 2026-01-15.",
+      "doc_id": "SYNTHETICWIRE-20260115",
+      "chunk_id": "evidence_treasury_auction_2026-01-15"
     }
   ]
 }

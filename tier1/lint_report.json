@@ -1,5 +1,5 @@
 {
-  "profile": "eval",
+  "profile": "dev",
   "files": [
     {
       "filename": "day_2026-01-08.json",
@@ -159,14 +159,20 @@
     }
   ],
   "cross_file": {
-    "errors": [
+    "errors": [],
+    "warnings": [
       {
         "code": "L1-REAL-001",
-        "severity": "HARD",
-        "path": "day_2026-03-13.json:market_outcomes.indices[IWM].close",
-        "message": "IWM close 216.41 repeats across dates (2026-01-08 and 2026-03-13). This degrades eval realism."
+        "severity": "SOFT",
+        "path": "day_2026-04-21.json:market_outcomes.indices[QQQ].close",
+        "message": "QQQ close 458.9 repeats across dates (2026-04-07 and 2026-04-21). This degrades eval realism."
+      },
+      {
+        "code": "L1-REAL-001",
+        "severity": "SOFT",
+        "path": "day_2026-04-24.json:market_outcomes.indices[IWM].close",
+        "message": "IWM close 215.08 repeats across dates (2026-01-08 and 2026-04-24). This degrades eval realism."
       }
-    ],
-    "warnings": []
+    ]
   }
 }
