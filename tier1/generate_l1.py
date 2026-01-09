@@ -237,6 +237,32 @@ def calculate_future_date(date_str: str, days: int) -> str:
     return (d + timedelta(days=days)).strftime("%Y-%m-%d")
 
 
+def infer_market_session(timestamp_iso: str, region: str = "US") -> str:
+    """
+    Infer market_session from timestamp and region.
+    For US equities (UTC timestamps):
+    - Pre-market: 12:00-13:30 UTC (8:00-9:30 ET, accounting for ~UTC-5/UTC-4)
+    - Regular: 13:30-20:30 UTC (9:30-16:30 ET, covers both EST and EDT)
+    - Post-market: 20:30-01:00 UTC (16:30-21:00 ET, wraps to next day)
+    """
+    if region != "US":
+        return "regular"  # Default for non-US; extend later
+    
+    try:
+        dt = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ")
+        hour = dt.hour
+        
+        # US equities session windows (UTC)
+        if hour < 13 or (hour == 13 and dt.minute < 30):
+            return "pre"
+        elif hour < 20 or (hour == 20 and dt.minute < 30):
+            return "regular"
+        else:  # 20:30+ UTC
+            return "post"
+    except (ValueError, AttributeError):
+        return "regular"  # Fallback
+
+
 # -----------------------------
 # Text sanitization (L1-neutral, fact-only)
 # -----------------------------
@@ -462,7 +488,7 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
         ts_hour = rng.randint(13, 21)
         ts_min = rng.randint(0, 59)
         published_ts = f"{date}T{ts_hour:02d}:{ts_min:02d}:00Z"
-        session = "pre" if ts_hour < 14 else ("post" if ts_hour >= 20 else "regular")
+        session = infer_market_session(published_ts, region="US")
 
         if et == "earnings_8k":
             co = rng.choice(
@@ -488,7 +514,7 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
                     "event_id": event_id,
                     "event_type": "earnings_8k",
                     "published_ts": published_ts,
-                    "market_session": "post",
+                    "market_session": session,
                     "facts": facts,
                     "source": source,
                     "entities": entities,
@@ -698,24 +724,37 @@ def generate_reaction_windows(
 
         for idx in indices:
             if idx == "VIX":
-                move = (-shock) * 0.8 + rng.uniform(-0.4, 0.4)
+                # VIX reactions in points (vol points), not percent
+                move_pts = (-shock) * 0.8 + rng.uniform(-0.4, 0.4)
+                move_pts = max(-2.5, min(2.5, move_pts))
+                rw.append(
+                    {
+                        "event_id": e["event_id"],
+                        "instrument": idx,
+                        "window": "t0_to_t+60m",
+                        "move_pts": round(move_pts, 3),
+                        "move_type": "pts",
+                    }
+                )
             else:
-                move = shock * 0.9 + rng.uniform(-0.4, 0.4)
-            move = max(-2.5, min(2.5, move))
-            rw.append(
-                {
-                    "event_id": e["event_id"],
-                    "instrument": idx,
-                    "window": "t0_to_t+60m",
-                    "move_pct": round(move, 3),
-                }
-            )
+                # Equity indices use percent
+                move_pct = shock * 0.9 + rng.uniform(-0.4, 0.4)
+                move_pct = max(-2.5, min(2.5, move_pct))
+                rw.append(
+                    {
+                        "event_id": e["event_id"],
+                        "instrument": idx,
+                        "window": "t0_to_t+60m",
+                        "move_pct": round(move_pct, 3),
+                        "move_type": "pct",
+                    }
+                )
 
         affected = rng.sample(ticker_syms, k=min(5, max(3, len(ticker_syms) // 4)))
         for sym in affected:
             beta = 1.3 if SECTOR_MAP.get(sym) == "Technology" else 1.0
-            move = shock * beta + rng.uniform(-1.2, 1.2)
-            move = max(-5.0, min(5.0, move))
+            move_pct = shock * beta + rng.uniform(-1.2, 1.2)
+            move_pct = max(-5.0, min(5.0, move_pct))
             rw.append(
                 {
                     "event_id": e["event_id"],
@@ -723,7 +762,8 @@ def generate_reaction_windows(
                     "window": rng.choice(
                         ["t0_to_t+30m", "t0_to_t+60m", "pre_to_close"]
                     ),
-                    "move_pct": round(move, 3),
+                    "move_pct": round(move_pct, 3),
+                    "move_type": "pct",
                 }
             )
 

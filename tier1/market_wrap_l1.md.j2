@@ -126,13 +126,13 @@ sources_used:
 
 **Core instruments**
 {% for rw in core_rows %}
-- **{{ rw.instrument }}** — Window {{ rw.window }}: {{ "%+.3f"|format(rw.move_pct) }}%
+- **{{ rw.instrument }}** — Window {{ rw.window }}: {% if rw.move_pts is defined %}{{ "%+.3f"|format(rw.move_pts) }} pts{% elif rw.move_pct is defined %}{{ "%+.3f"|format(rw.move_pct) }}%{% else %}{{ "%+.3f"|format(rw.move or 0) }}{% endif %}
 {% endfor %}
 
 {% if extra_rows|length > 0 %}
 **Additional instruments (capped)**
 {% for rw in extra_rows[:max_extras] %}
-- **{{ rw.instrument }}** — Window {{ rw.window }}: {{ "%+.3f"|format(rw.move_pct) }}%
+- **{{ rw.instrument }}** — Window {{ rw.window }}: {% if rw.move_pts is defined %}{{ "%+.3f"|format(rw.move_pts) }} pts{% elif rw.move_pct is defined %}{{ "%+.3f"|format(rw.move_pct) }}%{% else %}{{ "%+.3f"|format(rw.move or 0) }}{% endif %}
 {% endfor %}
 {% endif %}
 

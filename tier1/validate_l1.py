@@ -21,6 +21,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 
@@ -134,9 +135,30 @@ def check_market_outcomes(day: Dict[str, Any], errors: List[LintItem]):
             add_item(errors, "L1-CON-006", "HARD", f"market_outcomes.volatility[{i}]", f"{sym}: use change_pts (points), not generic change.")
 
 
+def infer_market_session(timestamp_iso: str, region: str = "US") -> str:
+    """Infer market_session from timestamp and region (matches generator logic)."""
+    if region != "US":
+        return "regular"
+    
+    try:
+        dt = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ")
+        hour = dt.hour
+        
+        # US equities session windows (UTC)
+        if hour < 13 or (hour == 13 and dt.minute < 30):
+            return "pre"
+        elif hour < 20 or (hour == 20 and dt.minute < 30):
+            return "regular"
+        else:  # 20:30+ UTC
+            return "post"
+    except (ValueError, AttributeError):
+        return "regular"
+
+
 def check_events_reactions_evidence(day: Dict[str, Any], errors: List[LintItem]):
     events = day.get("events", []) or []
     event_ids: List[str] = []
+    region = day.get("governance", {}).get("region", "US")
 
     for i, e in enumerate(events):
         eid = e.get("event_id")
@@ -144,6 +166,18 @@ def check_events_reactions_evidence(day: Dict[str, Any], errors: List[LintItem])
             add_item(errors, "L1-REF-001", "HARD", f"events[{i}].event_id", "Missing event_id.")
             continue
         event_ids.append(eid)
+
+        # Check market_session consistency with timestamp
+        published_ts = e.get("published_ts")
+        stated_session = e.get("market_session")
+        if published_ts and stated_session:
+            inferred = infer_market_session(published_ts, region)
+            if inferred != stated_session:
+                add_item(
+                    errors, "L1-SESS-001", "HARD",
+                    f"events[{i}].market_session",
+                    f"Session '{stated_session}' inconsistent with timestamp {published_ts} (should be '{inferred}')."
+                )
 
         for j, fact in enumerate(e.get("facts", []) or []):
             bad = contains_forbidden(fact)
@@ -155,10 +189,57 @@ def check_events_reactions_evidence(day: Dict[str, Any], errors: List[LintItem])
 
     event_set = set(event_ids)
 
+    # Check reaction windows: move_type consistency and VIX instrumentation
     for i, rw in enumerate(day.get("reaction_windows", []) or []):
         eid = rw.get("event_id")
         if eid and eid not in event_set:
             add_item(errors, "L1-REF-002", "HARD", f"reaction_windows[{i}].event_id", f"References missing event_id '{eid}'.")
+        
+        instrument = rw.get("instrument", "")
+        move_type = rw.get("move_type", "")
+        has_move_pct = "move_pct" in rw
+        has_move_pts = "move_pts" in rw
+        
+        # VIX-family instruments must use move_pts
+        if instrument in ("VIX", "VIX9D"):
+            if not has_move_pts:
+                add_item(
+                    errors, "L1-VIX-001", "HARD",
+                    f"reaction_windows[{i}].instrument",
+                    f"{instrument} reaction must use move_pts, not move_pct."
+                )
+            if not move_type:
+                add_item(
+                    errors, "L1-VIX-003", "HARD",
+                    f"reaction_windows[{i}].move_type",
+                    f"{instrument} reaction must have move_type field (got empty)."
+                )
+            elif move_type != "pts":
+                add_item(
+                    errors, "L1-VIX-002", "HARD",
+                    f"reaction_windows[{i}].move_type",
+                    f"{instrument} reaction must have move_type='pts', got '{move_type}'."
+                )
+        else:
+            # Equity indices/tickers must use move_pct
+            if not has_move_pct:
+                add_item(
+                    errors, "L1-MOVE-001", "HARD",
+                    f"reaction_windows[{i}].instrument",
+                    f"Non-VIX instrument '{instrument}' must use move_pct, not move_pts."
+                )
+            if not move_type:
+                add_item(
+                    errors, "L1-MOVE-003", "HARD",
+                    f"reaction_windows[{i}].move_type",
+                    f"Non-VIX instrument '{instrument}' must have move_type field (got empty)."
+                )
+            elif move_type != "pct":
+                add_item(
+                    errors, "L1-MOVE-002", "HARD",
+                    f"reaction_windows[{i}].move_type",
+                    f"Non-VIX instrument '{instrument}' must have move_type='pct', got '{move_type}'."
+                )
 
     # Check evidence_items: uniqueness, referential integrity, and content
     evidence_items = day.get("evidence_items", []) or []
