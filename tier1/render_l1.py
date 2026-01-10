@@ -18,12 +18,39 @@ from typing import List, Tuple
 
 FORBIDDEN_TOKENS = [
     # causal / interpretive / forecast-ish
-    "because", "due to", "driven by", "as investors", "on hopes", "on fears",
-    "relief", "concerns", "sentiment", "risk-on", "risk off", "risk-off",
-    "bullish", "bearish", "support", "resistance", "oversold", "overbought",
-    "priced in", "implies", "signals", "likely", "expected to", "should",
-    "could", "may ", "outlook", "forecast", "led", "dragged", "weighed",
-    "boosted", "lagged",
+    "because",
+    "due to",
+    "driven by",
+    "as investors",
+    "on hopes",
+    "on fears",
+    "relief",
+    "concerns",
+    "sentiment",
+    "risk-on",
+    "risk off",
+    "risk-off",
+    "bullish",
+    "bearish",
+    "support",
+    "resistance",
+    "oversold",
+    "overbought",
+    "priced in",
+    "implies",
+    "signals",
+    "likely",
+    "expected to",
+    "should",
+    "could",
+    "may ",
+    "outlook",
+    "forecast",
+    "led",
+    "dragged",
+    "weighed",
+    "boosted",
+    "lagged",
 ]
 
 REQUIRED_HEADINGS = [
@@ -46,12 +73,14 @@ REQUIRED_CHUNKS = [
 
 CONCAT_BULLET_RE = re.compile(r"^- .* - \*\*", re.MULTILINE)
 
+
 def contains_forbidden(text: str) -> Tuple[bool, str]:
     t = (text or "").lower()
     for tok in FORBIDDEN_TOKENS:
         if tok in t:
             return True, tok
     return False, ""
+
 
 def md_lint(rendered: str) -> List[str]:
     issues: List[str] = []
@@ -69,9 +98,12 @@ def md_lint(rendered: str) -> List[str]:
         issues.append(f"MD-LINT-PUR-001 forbidden token found: '{tok}'")
 
     if CONCAT_BULLET_RE.search(rendered):
-        issues.append("MD-LINT-FMT-001 concatenated bullet items detected (one bullet per line).")
+        issues.append(
+            "MD-LINT-FMT-001 concatenated bullet items detected (one bullet per line)."
+        )
 
     return issues
+
 
 def render_one(json_path: str, template_path: str, output_dir: str) -> Tuple[bool, str]:
     try:
@@ -105,6 +137,7 @@ def render_one(json_path: str, template_path: str, output_dir: str) -> Tuple[boo
         return True, out_name
     except Exception as e:
         return False, f"Render failed: {e}"
+
 
 def main() -> int:
     p = argparse.ArgumentParser(description="Render Layer-1 JSON -> Markdown")
@@ -143,6 +176,7 @@ def main() -> int:
 
     print(f"Render complete: {passed} passed, {failed} failed")
     return 0 if failed == 0 else 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -247,11 +247,11 @@ def infer_market_session(timestamp_iso: str, region: str = "US") -> str:
     """
     if region != "US":
         return "regular"  # Default for non-US; extend later
-    
+
     try:
         dt = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ")
         hour = dt.hour
-        
+
         # US equities session windows (UTC)
         if hour < 13 or (hour == 13 and dt.minute < 30):
             return "pre"
@@ -266,7 +266,18 @@ def infer_market_session(timestamp_iso: str, region: str = "US") -> str:
 # -----------------------------
 # Text sanitization (L1-neutral, fact-only)
 # -----------------------------
-FORBIDDEN = ["should", "could", "may", "likely", "expected", "forecast", "outlook", "because", "due to", "driven by"]
+FORBIDDEN = [
+    "should",
+    "could",
+    "may",
+    "likely",
+    "expected",
+    "forecast",
+    "outlook",
+    "because",
+    "due to",
+    "driven by",
+]
 
 
 def sanitize_l1_text(s: str) -> str:
@@ -278,7 +289,9 @@ def sanitize_l1_text(s: str) -> str:
             s2 = re.sub(rf"\b{re.escape(tok)}\b", "reported", s2, flags=re.IGNORECASE)
             low = s2.lower()
     # strip interpretive connectors
-    s2 = re.sub(r"\b(investors|sentiment|relief|concerns)\b", "", s2, flags=re.IGNORECASE)
+    s2 = re.sub(
+        r"\b(investors|sentiment|relief|concerns)\b", "", s2, flags=re.IGNORECASE
+    )
     s2 = re.sub(r"\s{2,}", " ", s2).strip()
     return s2
 
@@ -339,6 +352,7 @@ def generate_governance(date: str, doc_id: str) -> Dict[str, Any]:
 # Market outcomes (correlated, less duplication)
 # -----------------------------
 
+
 def generate_market_outcomes(
     date: str, prev_date: Optional[str], rng: random.Random, state: Dict[str, float]
 ) -> Dict[str, Any]:
@@ -348,28 +362,28 @@ def generate_market_outcomes(
         return max(lo, min(hi, x))
 
     # Baselines (use prev close when available; else use static anchors)
-    base_spx  = float(base.get("SPX", 4850.25))
-    base_ndx  = float(base.get("NDX", 19245.75))
+    base_spx = float(base.get("SPX", 4850.25))
+    base_ndx = float(base.get("NDX", 19245.75))
     base_djia = float(base.get("DJIA", 38125.45))
-    base_rut  = float(base.get("RUT", 2150.80))
-    base_qqq  = float(base.get("QQQ", 475.32))
-    base_iwm  = float(base.get("IWM", 215.45))
+    base_rut = float(base.get("RUT", 2150.80))
+    base_qqq = float(base.get("QQQ", 475.32))
+    base_iwm = float(base.get("IWM", 215.45))
 
     # Risk drives SPX/NDX; idiosyncratic adds noise (percent returns)
-    spx_ret  = clamp(state["risk"] * 0.90 + rng.uniform(-0.40, 0.40), -2.5, 2.5)
-    ndx_ret  = clamp(state["risk"] * 1.15 + rng.uniform(-0.55, 0.55), -3.0, 3.0)
+    spx_ret = clamp(state["risk"] * 0.90 + rng.uniform(-0.40, 0.40), -2.5, 2.5)
+    ndx_ret = clamp(state["risk"] * 1.15 + rng.uniform(-0.55, 0.55), -3.0, 3.0)
     djia_ret = clamp(state["risk"] * 0.70 + rng.uniform(-0.35, 0.35), -2.2, 2.2)
-    rut_ret  = clamp(state["risk"] * 1.00 + rng.uniform(-0.60, 0.60), -3.2, 3.2)
-    qqq_ret  = clamp(ndx_ret * 0.85 + rng.uniform(-0.25, 0.25), -3.0, 3.0)
-    iwm_ret  = clamp(rut_ret * 0.80 + rng.uniform(-0.25, 0.25), -3.0, 3.0)
+    rut_ret = clamp(state["risk"] * 1.00 + rng.uniform(-0.60, 0.60), -3.2, 3.2)
+    qqq_ret = clamp(ndx_ret * 0.85 + rng.uniform(-0.25, 0.25), -3.0, 3.0)
+    iwm_ret = clamp(rut_ret * 0.80 + rng.uniform(-0.25, 0.25), -3.0, 3.0)
 
     # Convert to closes
-    spx_close  = round(base_spx  * (1 + spx_ret / 100), 2)
-    ndx_close  = round(base_ndx  * (1 + ndx_ret / 100), 2)
+    spx_close = round(base_spx * (1 + spx_ret / 100), 2)
+    ndx_close = round(base_ndx * (1 + ndx_ret / 100), 2)
     djia_close = round(base_djia * (1 + djia_ret / 100), 2)
-    rut_close  = round(base_rut  * (1 + rut_ret / 100), 2)
-    qqq_close  = round(base_qqq  * (1 + qqq_ret / 100), 2)
-    iwm_close  = round(base_iwm  * (1 + iwm_ret / 100), 2)
+    rut_close = round(base_rut * (1 + rut_ret / 100), 2)
+    qqq_close = round(base_qqq * (1 + qqq_ret / 100), 2)
+    iwm_close = round(base_iwm * (1 + iwm_ret / 100), 2)
 
     # High/low must bracket close; generate spreads first then apply
     def make_range(close: float) -> Dict[str, float]:
@@ -396,7 +410,7 @@ def generate_market_outcomes(
     ust_2y_level = round(4.15 + state["rates"] * 0.06 + rng.uniform(-0.03, 0.03), 2)
     ust_10y_level = round(4.35 + state["rates"] * 0.08 + rng.uniform(-0.05, 0.05), 2)
 
-    ust_2y_change_bps = round(rng.uniform(-6.0, 6.0), 1)   # daily bps move
+    ust_2y_change_bps = round(rng.uniform(-6.0, 6.0), 1)  # daily bps move
     ust_10y_change_bps = round(rng.uniform(-8.0, 8.0), 1)
 
     # DXY: index level + pct change
@@ -404,9 +418,13 @@ def generate_market_outcomes(
     dxy_change_pct = round(rng.uniform(-0.60, 0.60), 2)
 
     # EURUSD: ratio + abs + pct change
-    eurusd_level = round(1.0850 - state["rates"] * 0.004 + rng.uniform(-0.003, 0.003), 4)
+    eurusd_level = round(
+        1.0850 - state["rates"] * 0.004 + rng.uniform(-0.003, 0.003), 4
+    )
     eurusd_change_abs = round(rng.uniform(-0.0060, 0.0060), 4)
-    eurusd_change_pct = round((eurusd_change_abs / max(1e-9, eurusd_level - eurusd_change_abs)) * 100, 2)
+    eurusd_change_pct = round(
+        (eurusd_change_abs / max(1e-9, eurusd_level - eurusd_change_abs)) * 100, 2
+    )
 
     # WTI: USD level + pct change
     wti_level = round(75.80 + state["energy"] * 2.0 + rng.uniform(-1.2, 1.2), 2)
@@ -448,26 +466,82 @@ def generate_market_outcomes(
                 "return_pct": round(ndx_ret, 2),
                 **ndx_rng,
             },
-            {"symbol": "RUT", "prev_close": round(base_rut, 2), "close": rut_close, "return_pct": round(rut_ret, 2)},
-            {"symbol": "DJIA", "prev_close": round(base_djia, 2), "close": djia_close, "return_pct": round(djia_ret, 2)},
-            {"symbol": "QQQ", "prev_close": round(base_qqq, 2), "close": qqq_close, "return_pct": round(qqq_ret, 2)},
-            {"symbol": "IWM", "prev_close": round(base_iwm, 2), "close": iwm_close, "return_pct": round(iwm_ret, 2)},
+            {
+                "symbol": "RUT",
+                "prev_close": round(base_rut, 2),
+                "close": rut_close,
+                "return_pct": round(rut_ret, 2),
+            },
+            {
+                "symbol": "DJIA",
+                "prev_close": round(base_djia, 2),
+                "close": djia_close,
+                "return_pct": round(djia_ret, 2),
+            },
+            {
+                "symbol": "QQQ",
+                "prev_close": round(base_qqq, 2),
+                "close": qqq_close,
+                "return_pct": round(qqq_ret, 2),
+            },
+            {
+                "symbol": "IWM",
+                "prev_close": round(base_iwm, 2),
+                "close": iwm_close,
+                "return_pct": round(iwm_ret, 2),
+            },
         ],
         "rates_fx_commodities": [
-            {"symbol": "UST 2Y", "value": ust_2y_level, "unit": "pct", "change_bps": ust_2y_change_bps},
-            {"symbol": "UST 10Y", "value": ust_10y_level, "unit": "pct", "change_bps": ust_10y_change_bps},
-            {"symbol": "DXY", "value": dxy_level, "unit": "index", "change_pct": dxy_change_pct},
-            {"symbol": "EURUSD", "value": eurusd_level, "unit": "ratio", "change_abs": eurusd_change_abs, "change_pct": eurusd_change_pct},
-            {"symbol": "WTI Crude", "value": wti_level, "unit": "usd", "change_pct": wti_change_pct},
-            {"symbol": "Gold", "value": gold_level, "unit": "usd", "change_pct": gold_change_pct},
+            {
+                "symbol": "UST 2Y",
+                "value": ust_2y_level,
+                "unit": "pct",
+                "change_bps": ust_2y_change_bps,
+            },
+            {
+                "symbol": "UST 10Y",
+                "value": ust_10y_level,
+                "unit": "pct",
+                "change_bps": ust_10y_change_bps,
+            },
+            {
+                "symbol": "DXY",
+                "value": dxy_level,
+                "unit": "index",
+                "change_pct": dxy_change_pct,
+            },
+            {
+                "symbol": "EURUSD",
+                "value": eurusd_level,
+                "unit": "ratio",
+                "change_abs": eurusd_change_abs,
+                "change_pct": eurusd_change_pct,
+            },
+            {
+                "symbol": "WTI Crude",
+                "value": wti_level,
+                "unit": "usd",
+                "change_pct": wti_change_pct,
+            },
+            {
+                "symbol": "Gold",
+                "value": gold_level,
+                "unit": "usd",
+                "change_pct": gold_change_pct,
+            },
         ],
         "volatility": [
             {"symbol": "VIX", "close": vix_level, "change_pts": vix_change_pts},
             {"symbol": "VIX9D", "close": vix9d_level, "change_pts": vix9d_change_pts},
         ],
-        "breadth": {"advancers": adv, "decliners": dec, "pct_above_200dma": pct_above_200},
+        "breadth": {
+            "advancers": adv,
+            "decliners": dec,
+            "pct_above_200dma": pct_above_200,
+        },
     }
     return out
+
 
 def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
     # Keep your existing variety, but make IDs stable-ish
@@ -500,8 +574,12 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
             rev_actual = rng.uniform(15, 60)
             rev_prior = rng.uniform(15, 60)
             facts = [
-                sanitize_l1_text(f"{co} reported EPS: ${eps_actual:.2f} (prior: ${eps_prior:.2f})"),
-                sanitize_l1_text(f"{co} reported Revenue: ${rev_actual:.1f}B (prior: ${rev_prior:.1f}B)"),
+                sanitize_l1_text(
+                    f"{co} reported EPS: ${eps_actual:.2f} (prior: ${eps_prior:.2f})"
+                ),
+                sanitize_l1_text(
+                    f"{co} reported Revenue: ${rev_actual:.1f}B (prior: ${rev_prior:.1f}B)"
+                ),
             ]
             source = {
                 "name": co,
@@ -552,53 +630,87 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
 
         # Structured facts for other event types
         if et == "economic_release":
-            release_type = rng.choice(["CPI YoY", "ISM Manufacturing PMI", "Nonfarm Payrolls", "PPI YoY"])
+            release_type = rng.choice(
+                ["CPI YoY", "ISM Manufacturing PMI", "Nonfarm Payrolls", "PPI YoY"]
+            )
             if "CPI" in release_type:
                 value = round(rng.uniform(2.5, 3.5), 1)
                 prior = round(value + rng.uniform(-0.3, 0.3), 1)
-                facts = [sanitize_l1_text(f"BLS released {release_type}: {value}% (prior: {prior}%)")]
+                facts = [
+                    sanitize_l1_text(
+                        f"BLS released {release_type}: {value}% (prior: {prior}%)"
+                    )
+                ]
             elif "PMI" in release_type:
                 value = round(rng.uniform(48.0, 54.0), 1)
                 prior = round(value + rng.uniform(-1.5, 1.5), 1)
-                facts = [sanitize_l1_text(f"ISM released {release_type}: {value} (prior: {prior})")]
+                facts = [
+                    sanitize_l1_text(
+                        f"ISM released {release_type}: {value} (prior: {prior})"
+                    )
+                ]
             else:
                 value = rng.randint(150, 250)
                 prior = value + rng.randint(-30, 30)
-                facts = [sanitize_l1_text(f"BLS released {release_type}: {value}K (prior: {prior}K)")]
+                facts = [
+                    sanitize_l1_text(
+                        f"BLS released {release_type}: {value}K (prior: {prior}K)"
+                    )
+                ]
         elif et == "treasury_auction":
             maturity = rng.choice(["10Y", "30Y", "2Y"])
             stop_out = round(rng.uniform(4.0, 4.5), 2)
             bid_cover = round(rng.uniform(2.3, 2.7), 2)
-            facts = [sanitize_l1_text(f"Treasury auction {maturity}: stop-out {stop_out}%, bid-to-cover {bid_cover}")]
+            facts = [
+                sanitize_l1_text(
+                    f"Treasury auction {maturity}: stop-out {stop_out}%, bid-to-cover {bid_cover}"
+                )
+            ]
         elif et == "fed_speech":
             speaker = rng.choice(["Chair", "Vice Chair", "Regional President"])
-            venue = rng.choice(["Economic Club of New York", "Brookings Institution", "Chamber of Commerce", "Federal Reserve Bank of St. Louis", "National Press Club"])
-            topic = rng.choice(["monetary policy", "economic outlook", "inflation target"])
-            
+            venue = rng.choice(
+                [
+                    "Economic Club of New York",
+                    "Brookings Institution",
+                    "Chamber of Commerce",
+                    "Federal Reserve Bank of St. Louis",
+                    "National Press Club",
+                ]
+            )
+            topic = rng.choice(
+                ["monetary policy", "economic outlook", "inflation target"]
+            )
+
             # Generate realistic quotes based on topic
             if topic == "inflation target":
-                quote = rng.choice([
-                    "We remain committed to our 2% inflation target and will take appropriate action to achieve it.",
-                    "Inflation is moving toward our 2% goal, but we need to see sustained progress.",
-                    "The inflation target remains at 2% and we are confident in reaching it over time."
-                ])
+                quote = rng.choice(
+                    [
+                        "We remain committed to our 2% inflation target and will take appropriate action to achieve it.",
+                        "Inflation is moving toward our 2% goal, but we need to see sustained progress.",
+                        "The inflation target remains at 2% and we are confident in reaching it over time.",
+                    ]
+                )
             elif topic == "monetary policy":
-                quote = rng.choice([
-                    "Monetary policy will remain data-dependent as we assess incoming economic information.",
-                    "We will continue to adjust monetary policy based on economic conditions and inflation trends.",
-                    "The current monetary policy stance is appropriate given economic conditions."
-                ])
+                quote = rng.choice(
+                    [
+                        "Monetary policy will remain data-dependent as we assess incoming economic information.",
+                        "We will continue to adjust monetary policy based on economic conditions and inflation trends.",
+                        "The current monetary policy stance is appropriate given economic conditions.",
+                    ]
+                )
             else:  # economic outlook
-                quote = rng.choice([
-                    "The economic outlook remains positive with moderate growth expected in coming quarters.",
-                    "We anticipate steady economic growth supported by strong labor market conditions.",
-                    "Economic activity continues to expand at a sustainable pace."
-                ])
-            
+                quote = rng.choice(
+                    [
+                        "The economic outlook remains positive with moderate growth expected in coming quarters.",
+                        "We anticipate steady economic growth aligned with strong labor market conditions.",
+                        "Economic activity continues to expand at a sustainable pace.",
+                    ]
+                )
+
             facts = [
                 sanitize_l1_text(f"Fed {speaker} delivered speech on {topic}."),
                 sanitize_l1_text(f"Venue: {venue}."),
-                sanitize_l1_text(f"Quote: \"{quote}\"")
+                sanitize_l1_text(f'Quote: "{quote}"'),
             ]
         else:
             facts = [sanitize_l1_text(f"{et} event recorded for {date}.")]
@@ -622,6 +734,7 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
 
     events.sort(key=lambda x: x["published_ts"])
     return events
+
 
 # -----------------------------
 # Tickers/sectors/movers (single generation per day)
@@ -701,11 +814,11 @@ def generate_sectors(
 
 def generate_movers(tickers: List[Dict[str, Any]]) -> Dict[str, Any]:
     sorted_t = sorted(tickers, key=lambda x: x["return_pct"], reverse=True)
-    
+
     # Only include positive returns for gainers, negative for decliners
     gainers = [t for t in sorted_t if t["return_pct"] > 0]
     decliners = [t for t in sorted_t if t["return_pct"] < 0]
-    
+
     top_g = [
         {
             "symbol": t["symbol"],
@@ -724,10 +837,10 @@ def generate_movers(tickers: List[Dict[str, Any]]) -> Dict[str, Any]:
         }
         for t in decliners[-5:]  # Take last 5 (most negative)
     ]
-    
+
     # Reverse decliners to show most negative first
     top_d.reverse()
-    
+
     return {"top_gainers": top_g, "top_decliners": top_d}
 
 
@@ -759,7 +872,6 @@ def generate_reaction_windows(
                         "instrument": idx,
                         "window": "t0_to_t+60m",
                         "move_pts": round(move_pts, 3),
-                        "move_type": "pts",
                     }
                 )
             else:
@@ -772,7 +884,6 @@ def generate_reaction_windows(
                         "instrument": idx,
                         "window": "t0_to_t+60m",
                         "move_pct": round(move_pct, 3),
-                        "move_type": "pct",
                     }
                 )
 
@@ -789,7 +900,6 @@ def generate_reaction_windows(
                         ["t0_to_t+30m", "t0_to_t+60m", "pre_to_close"]
                     ),
                     "move_pct": round(move_pct, 3),
-                    "move_type": "pct",
                 }
             )
 
@@ -807,14 +917,14 @@ def generate_evidence_items(
         # Fact-only excerpt: pick one fact line verbatim
         fact = rng.choice(e["facts"])
         excerpt = sanitize_l1_text(fact).strip()
-        
+
         # stable per evidence record
         evid_suffix = _short_hash(e["event_id"])
-        
+
         source_name = e["source"]["name"]
         source_slug = source_name.upper().replace(" ", "-")
         date_slug = date.replace("-", "")
-        
+
         out.append(
             {
                 "event_id": e["event_id"],

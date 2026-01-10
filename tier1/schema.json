@@ -379,8 +379,7 @@
         "required": [
           "event_id",
           "instrument",
-          "window",
-          "move_pct"
+          "window"
         ],
         "properties": {
           "event_id": {
@@ -398,7 +397,7 @@
           "move_pct": {
                 "type": "number"
               },
-          "move_points": {
+          "move_pts": {
             "type": "number"
           },
           "t0_ts": {
