@@ -14,6 +14,8 @@ import json
 import uuid
 import random
 import re
+import pytz
+from datetime import datetime
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 import argparse
@@ -239,27 +241,44 @@ def calculate_future_date(date_str: str, days: int) -> str:
 
 def infer_market_session(timestamp_iso: str, region: str = "US") -> str:
     """
-    Infer market_session from timestamp and region.
-    For US equities (UTC timestamps):
-    - Pre-market: 12:00-13:30 UTC (8:00-9:30 ET, accounting for ~UTC-5/UTC-4)
-    - Regular: 13:30-20:30 UTC (9:30-16:30 ET, covers both EST and EDT)
-    - Post-market: 20:30-01:00 UTC (16:30-21:00 ET, wraps to next day)
+    Infer market_session from timestamp and region using proper ET timezone conversion.
+    For US equities:
+    - Pre-market: before 9:30am ET
+    - Regular: 9:30am-4:00pm ET
+    - Post-market: after 4:00pm ET
     """
     if region != "US":
         return "regular"  # Default for non-US; extend later
 
     try:
-        dt = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ")
-        hour = dt.hour
+        # Parse UTC timestamp
+        dt_utc = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=pytz.UTC
+        )
 
-        # US equities session windows (UTC)
-        if hour < 13 or (hour == 13 and dt.minute < 30):
+        # Convert to Eastern Time (handles both EST and EDT automatically)
+        eastern = pytz.timezone("America/New_York")
+        dt_et = dt_utc.astimezone(eastern)
+
+        # Extract hour and minute for session determination
+        hour = dt_et.hour
+        minute = dt_et.minute
+
+        # US equities trading hours (ET)
+        # Premarket: before 9:30am ET
+        if hour < 9 or (hour == 9 and minute < 30):
             return "pre"
-        elif hour < 20 or (hour == 20 and dt.minute < 30):
+        # Regular session: 9:30am-4:00pm ET
+        elif (
+            (hour == 9 and minute >= 30)
+            or (hour > 9 and hour < 16)
+            or (hour == 16 and minute == 0)
+        ):
             return "regular"
-        else:  # 20:30+ UTC
+        # Post-market: after 4:00pm ET
+        else:  # hour >= 16 and minute > 0, or hour > 16
             return "post"
-    except (ValueError, AttributeError):
+    except (ValueError, AttributeError, pytz.exceptions.NonExistentTimeError):
         return "regular"  # Fallback
 
 
@@ -558,11 +577,46 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
     for i in range(n):
         et = rng.choice(event_types)
         event_id = f"evt_{et}_{date}_{i + 1}"
-        # Simplified: produce fact-only content; use synthetic URLs where real linking is error-prone in SDG
-        ts_hour = rng.randint(13, 21)
-        ts_min = rng.randint(0, 59)
-        published_ts = f"{date}T{ts_hour:02d}:{ts_min:02d}:00Z"
-        session = infer_market_session(published_ts, region="US")
+
+        # Choose session with realistic distribution (most events during regular hours)
+        session_weights = [("pre", 0.1), ("regular", 0.7), ("post", 0.2)]
+        session = rng.choices(
+            [s for s, _ in session_weights], weights=[w for _, w in session_weights]
+        )[0]
+
+        # Generate timestamp that actually falls within the ET time range for the chosen session
+        # Use proper ET timezone conversion to ensure consistency
+        eastern = pytz.timezone("America/New_York")
+
+        if session == "pre":
+            # Pre-market: before 9:30am ET
+            et_hour = rng.randint(8, 9)  # 8:00-9:29 ET
+            if et_hour == 9:
+                et_min = rng.randint(0, 29)  # Up to 9:29 ET
+            else:
+                et_min = rng.randint(0, 59)
+        elif session == "regular":
+            # Regular session: 9:30am-4:00pm ET
+            et_hour = rng.randint(9, 15)  # 9:30-15:59 ET
+            if et_hour == 9:
+                et_min = rng.randint(30, 59)  # From 9:30 ET
+            else:
+                et_min = rng.randint(0, 59)
+        else:  # post
+            # Post-market: after 4:00pm ET
+            et_hour = rng.randint(
+                16, 18
+            )  # 16:00-18:59 ET (covers reasonable post-market hours)
+            et_min = rng.randint(0, 59)
+
+        # Convert ET time to UTC for the timestamp
+        et_time = datetime.strptime(
+            f"{date} {et_hour:02d}:{et_min:02d}:00", "%Y-%m-%d %H:%M:%S"
+        )
+        et_time = eastern.localize(et_time)
+        utc_time = et_time.astimezone(pytz.UTC)
+
+        published_ts = utc_time.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         if et == "earnings_8k":
             co = rng.choice(
@@ -711,6 +765,59 @@ def generate_events(date: str, rng: random.Random) -> List[Dict[str, Any]]:
                 sanitize_l1_text(f"Fed {speaker} delivered speech on {topic}."),
                 sanitize_l1_text(f"Venue: {venue}."),
                 sanitize_l1_text(f'Quote: "{quote}"'),
+            ]
+        elif et == "regulatory_release":
+            # Select random regulatory agency
+            agencies = ["SEC", "FTC", "DOJ", "CFTC", "FDIC"]
+            agency = rng.choice(agencies)
+
+            # Generate document identifier based on agency
+            if agency == "SEC":
+                doc_id = f"SEC Release No. 2026-{rng.randint(100, 999)}"
+                actions = [
+                    "Form 8-K submitted",
+                    "Rule implemented",
+                    "Regulation finalized",
+                    "Guidance published",
+                ]
+            elif agency == "FTC":
+                doc_id = f"FTC File No. 2026-{rng.randint(1000, 9999)}"
+                actions = [
+                    "Complaint initiated",
+                    "Consent order finalized",
+                    "Rule proposed",
+                    "Investigation opened",
+                ]
+            elif agency == "DOJ":
+                doc_id = f"DOJ Case No. 2026-{rng.randint(10000, 99999)}"
+                actions = [
+                    "Antitrust complaint initiated",
+                    "Settlement approved",
+                    "Investigation completed",
+                    "Enforcement action initiated",
+                ]
+            elif agency == "CFTC":
+                doc_id = f"CFTC Docket No. 2026-{rng.randint(10, 99)}"
+                actions = [
+                    "Rule 606(b) finalized",
+                    "Position limit rule updated",
+                    "Dodd-Frank rule activated",
+                    "Compliance directive published",
+                ]
+            else:  # FDIC
+                doc_id = f"FDIC Order No. 2026-{rng.randint(1000, 9999)}"
+                actions = [
+                    "Bank merger cleared",
+                    "Capital requirement revised",
+                    "Resolution plan confirmed",
+                    "Supervisory guidance released",
+                ]
+
+            action = rng.choice(actions)
+
+            facts = [
+                sanitize_l1_text(f"{agency} {doc_id}"),
+                sanitize_l1_text(f"{action}"),
             ]
         else:
             facts = [sanitize_l1_text(f"{et} event recorded for {date}.")]

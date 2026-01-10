@@ -20,6 +20,7 @@ import json
 import os
 import re
 import sys
+import pytz
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
@@ -228,23 +229,46 @@ def check_market_outcomes(day: Dict[str, Any], errors: List[LintItem]):
 
 
 def infer_market_session(timestamp_iso: str, region: str = "US") -> str:
-    """Infer market_session from timestamp and region (matches generator logic)."""
+    """
+    Infer market_session from timestamp and region using proper ET timezone conversion.
+    For US equities:
+    - Pre-market: before 9:30am ET
+    - Regular: 9:30am-4:00pm ET
+    - Post-market: after 4:00pm ET
+    """
     if region != "US":
-        return "regular"
+        return "regular"  # Default for non-US; extend later
 
     try:
-        dt = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ")
-        hour = dt.hour
+        # Parse UTC timestamp
+        dt_utc = datetime.strptime(timestamp_iso, "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=pytz.UTC
+        )
 
-        # US equities session windows (UTC)
-        if hour < 13 or (hour == 13 and dt.minute < 30):
+        # Convert to Eastern Time (handles both EST and EDT automatically)
+        eastern = pytz.timezone("America/New_York")
+        dt_et = dt_utc.astimezone(eastern)
+
+        # Extract hour and minute for session determination
+        hour = dt_et.hour
+        minute = dt_et.minute
+
+        # US equities trading hours (ET)
+        # Premarket: before 9:30am ET
+        if hour < 9 or (hour == 9 and minute < 30):
             return "pre"
-        elif hour < 20 or (hour == 20 and dt.minute < 30):
+        # Regular session: 9:30am-4:00pm ET
+        elif (
+            (hour == 9 and minute >= 30)
+            or (hour > 9 and hour < 16)
+            or (hour == 16 and minute == 0)
+        ):
             return "regular"
-        else:  # 20:30+ UTC
+        # Post-market: after 4:00pm ET
+        else:  # hour >= 16 and minute > 0, or hour > 16
             return "post"
-    except (ValueError, AttributeError):
-        return "regular"
+    except (ValueError, AttributeError, pytz.exceptions.NonExistentTimeError):
+        return "regular"  # Fallback
 
 
 def check_events_reactions_evidence(day: Dict[str, Any], errors: List[LintItem]):

@@ -16,7 +16,7 @@
       "impact_v1.0.1"
     ],
     "pipeline_version": "v2.2.0",
-    "doc_id": "3677e296-b346-404e-a61a-04eea4a8d2d4",
+    "doc_id": "a3c7aafb-d7a3-4a16-aadc-79c585e35f71",
     "doc_key": "market_wrap/us/2026-04-24",
     "is_current": true,
     "is_active": true,
@@ -138,27 +138,9 @@
   },
   "events": [
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
-      "event_type": "economic_release",
-      "published_ts": "2026-04-24T16:47:00Z",
-      "market_session": "regular",
-      "facts": [
-        "BLS released PPI YoY: 224K (prior: 229K)"
-      ],
-      "source": {
-        "name": "SyntheticWire",
-        "source_type": "news_wire_synthetic",
-        "canonical_url": "synthetic://wire/2026-04-24/evt_economic_release_2026-04-24_1"
-      },
-      "entities": [
-        "SPX",
-        "NDX"
-      ]
-    },
-    {
       "event_id": "evt_fed_speech_2026-04-24_2",
       "event_type": "fed_speech",
-      "published_ts": "2026-04-24T18:04:00Z",
+      "published_ts": "2026-04-24T13:46:00Z",
       "market_session": "regular",
       "facts": [
         "Fed Regional President delivered speech on monetary policy.",
@@ -176,14 +158,32 @@
       ]
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_3",
-      "event_type": "fed_speech",
-      "published_ts": "2026-04-24T20:06:00Z",
+      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_type": "economic_release",
+      "published_ts": "2026-04-24T14:47:00Z",
       "market_session": "regular",
       "facts": [
-        "Fed Chair delivered speech on monetary policy.",
-        "Venue: National Press Club.",
-        "Quote: \"Monetary policy will remain data-dependent as we assess incoming economic information.\""
+        "BLS released PPI YoY: 224K (prior: 229K)"
+      ],
+      "source": {
+        "name": "SyntheticWire",
+        "source_type": "news_wire_synthetic",
+        "canonical_url": "synthetic://wire/2026-04-24/evt_economic_release_2026-04-24_1"
+      },
+      "entities": [
+        "SPX",
+        "NDX"
+      ]
+    },
+    {
+      "event_id": "evt_fed_speech_2026-04-24_3",
+      "event_type": "fed_speech",
+      "published_ts": "2026-04-24T19:30:00Z",
+      "market_session": "regular",
+      "facts": [
+        "Fed Chair delivered speech on inflation target.",
+        "Venue: Brookings Institution.",
+        "Quote: \"We remain committed to our 2% inflation target and will take appropriate action to achieve it.\""
       ],
       "source": {
         "name": "SyntheticWire",
@@ -198,445 +198,403 @@
   ],
   "reaction_windows": [
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_id": "evt_fed_speech_2026-04-24_2",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.509
+      "move_pct": -0.305
     },
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_id": "evt_fed_speech_2026-04-24_2",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.271
+      "move_pct": -0.326
     },
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_id": "evt_fed_speech_2026-04-24_2",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": -0.037
+      "move_pct": -0.678
     },
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_id": "evt_fed_speech_2026-04-24_2",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": -0.295
+      "move_pct": -0.013
     },
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_id": "evt_fed_speech_2026-04-24_2",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pts": 0.364
+      "move_pts": 0.542
     },
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
-      "instrument": "AMZN",
-      "window": "t0_to_t+30m",
-      "move_pct": 0.05
-    },
-    {
-      "event_id": "evt_economic_release_2026-04-24_1",
+      "event_id": "evt_fed_speech_2026-04-24_2",
       "instrument": "XLF",
-      "window": "t0_to_t+30m",
-      "move_pct": 0.217
-    },
-    {
-      "event_id": "evt_economic_release_2026-04-24_1",
-      "instrument": "KO",
       "window": "pre_to_close",
-      "move_pct": 0.738
+      "move_pct": -1.18
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_2",
+      "instrument": "KO",
+      "window": "t0_to_t+60m",
+      "move_pct": -1.511
+    },
+    {
+      "event_id": "evt_fed_speech_2026-04-24_2",
+      "instrument": "BAC",
+      "window": "t0_to_t+30m",
+      "move_pct": 0.309
+    },
+    {
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.34
+      "move_pct": -0.519
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.966
+      "move_pct": -0.473
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": -0.816
+      "move_pct": -0.371
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": -0.266
+      "move_pct": -0.066
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pts": 0.634
+      "move_pts": 0.021
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "AMZN",
-      "window": "t0_to_t+60m",
-      "move_pct": -0.817
+      "window": "pre_to_close",
+      "move_pct": -1.071
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
-      "instrument": "XLF",
+      "event_id": "evt_economic_release_2026-04-24_1",
+      "instrument": "MCD",
       "window": "t0_to_t+60m",
-      "move_pct": -1.39
+      "move_pct": 0.436
     },
     {
-      "event_id": "evt_fed_speech_2026-04-24_2",
+      "event_id": "evt_economic_release_2026-04-24_1",
       "instrument": "TMO",
       "window": "t0_to_t+30m",
-      "move_pct": -0.434
+      "move_pct": 0.046
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "instrument": "SPX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.922
+      "move_pct": -1.148
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "instrument": "NDX",
       "window": "t0_to_t+60m",
-      "move_pct": -0.604
+      "move_pct": -0.796
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "instrument": "DJIA",
       "window": "t0_to_t+60m",
-      "move_pct": -0.515
+      "move_pct": -1.267
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "instrument": "RUT",
       "window": "t0_to_t+60m",
-      "move_pct": -0.759
+      "move_pct": -0.583
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "instrument": "VIX",
       "window": "t0_to_t+60m",
-      "move_pts": 0.74
+      "move_pts": 1.149
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
-      "instrument": "MCD",
-      "window": "pre_to_close",
-      "move_pct": -0.743
-    },
-    {
-      "event_id": "evt_fed_speech_2026-04-24_3",
-      "instrument": "AMZN",
-      "window": "pre_to_close",
-      "move_pct": -0.529
+      "instrument": "PXD",
+      "window": "t0_to_t+30m",
+      "move_pct": -1.549
     },
     {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "instrument": "XLF",
       "window": "pre_to_close",
-      "move_pct": -0.228
+      "move_pct": 0.187
+    },
+    {
+      "event_id": "evt_fed_speech_2026-04-24_3",
+      "instrument": "BAC",
+      "window": "t0_to_t+30m",
+      "move_pct": -0.809
     }
   ],
   "movers": {
     "top_gainers": [
       {
-        "symbol": "PG",
-        "return_pct": 1.37,
-        "sector": "Consumer Staples",
-        "volume_multiple": 1.2
-      },
-      {
-        "symbol": "KO",
-        "return_pct": 0.67,
-        "sector": "Consumer Staples",
-        "volume_multiple": 1.1
-      },
-      {
-        "symbol": "JPM",
-        "return_pct": 0.18,
-        "sector": "Financials",
-        "volume_multiple": 1.3
-      },
-      {
-        "symbol": "MS",
-        "return_pct": 0.02,
-        "sector": "Financials",
-        "volume_multiple": 1.2
-      }
-    ],
-    "top_decliners": [
-      {
-        "symbol": "PXD",
-        "return_pct": -3.0,
-        "sector": "Energy",
-        "volume_multiple": 1.4
-      },
-      {
-        "symbol": "BAC",
-        "return_pct": -2.88,
-        "sector": "Financials",
-        "volume_multiple": 1.6
-      },
-      {
-        "symbol": "XLF",
-        "return_pct": -2.32,
-        "sector": "Financials",
-        "volume_multiple": 1.5
-      },
-      {
         "symbol": "GE",
-        "return_pct": -2.14,
+        "return_pct": 0.57,
         "sector": "Industrials",
         "volume_multiple": 1.3
       },
       {
-        "symbol": "NVDA",
-        "return_pct": -1.62,
-        "sector": "Technology",
+        "symbol": "TMO",
+        "return_pct": 0.38,
+        "sector": "Healthcare",
+        "volume_multiple": 1.2
+      },
+      {
+        "symbol": "XLF",
+        "return_pct": 0.05,
+        "sector": "Financials",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "AMZN",
+        "return_pct": 0.04,
+        "sector": "Consumer Discretionary",
+        "volume_multiple": 1.0
+      },
+      {
+        "symbol": "MCD",
+        "return_pct": 0.03,
+        "sector": "Consumer Discretionary",
+        "volume_multiple": 1.3
+      }
+    ],
+    "top_decliners": [
+      {
+        "symbol": "MS",
+        "return_pct": -2.98,
+        "sector": "Financials",
         "volume_multiple": 1.5
+      },
+      {
+        "symbol": "PXD",
+        "return_pct": -1.74,
+        "sector": "Energy",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "NVDA",
+        "return_pct": -1.38,
+        "sector": "Technology",
+        "volume_multiple": 1.4
+      },
+      {
+        "symbol": "KO",
+        "return_pct": -1.28,
+        "sector": "Consumer Staples",
+        "volume_multiple": 1.3
+      },
+      {
+        "symbol": "BAC",
+        "return_pct": -0.87,
+        "sector": "Financials",
+        "volume_multiple": 1.2
       }
     ]
   },
   "sectors": [
     {
       "name": "XLK",
-      "return_pct": -1.18,
-      "volume_multiple": 1.39
+      "return_pct": -1.63,
+      "volume_multiple": 1.33
     },
     {
       "name": "XLF",
-      "return_pct": -0.49,
-      "volume_multiple": 1.11
+      "return_pct": -1.18,
+      "volume_multiple": 1.37
     },
     {
       "name": "XLE",
-      "return_pct": -0.16,
-      "volume_multiple": 1.07
+      "return_pct": 0.34,
+      "volume_multiple": 1.04
     },
     {
       "name": "XLU",
-      "return_pct": -0.99,
-      "volume_multiple": 1.1
+      "return_pct": -0.16,
+      "volume_multiple": 1.04
     },
     {
       "name": "XLRE",
-      "return_pct": -0.41,
-      "volume_multiple": 1.14
+      "return_pct": -0.82,
+      "volume_multiple": 1.38
     },
     {
       "name": "XLY",
-      "return_pct": -1.58,
-      "volume_multiple": 1.42
+      "return_pct": -1.14,
+      "volume_multiple": 1.23
     },
     {
       "name": "XLC",
-      "return_pct": -0.41,
-      "volume_multiple": 1.27
+      "return_pct": -0.88,
+      "volume_multiple": 1.14
     }
   ],
   "tickers": [
     {
-      "symbol": "BAC",
-      "close": 37.34,
-      "return_pct": -2.88,
-      "volume_multiple": 1.6,
+      "symbol": "KO",
+      "close": 61.36,
+      "return_pct": -1.28,
+      "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 37.32,
-        "sma_200": 36.74,
-        "rsi_14": 56.0
+        "sma_50": 61.37,
+        "sma_200": 56.31,
+        "rsi_14": 33.1
       },
       "filings_identified": false
     },
     {
-      "symbol": "AMZN",
-      "close": 183.42,
-      "return_pct": -0.99,
+      "symbol": "BAC",
+      "close": 38.12,
+      "return_pct": -0.87,
       "volume_multiple": 1.2,
       "technicals": {
-        "sma_50": 180.43,
-        "sma_200": 170.11,
-        "rsi_14": 68.0
+        "sma_50": 39.25,
+        "sma_200": 38.47,
+        "rsi_14": 56.4
+      },
+      "filings_identified": true
+    },
+    {
+      "symbol": "AMZN",
+      "close": 185.32,
+      "return_pct": 0.04,
+      "volume_multiple": 1.0,
+      "technicals": {
+        "sma_50": 181.09,
+        "sma_200": 180.72,
+        "rsi_14": 66.9
       },
       "filings_identified": false
     },
     {
       "symbol": "MCD",
-      "close": 298.32,
-      "return_pct": -0.06,
-      "volume_multiple": 1.0,
+      "close": 298.58,
+      "return_pct": 0.03,
+      "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 289.39,
-        "sma_200": 315.11,
-        "rsi_14": 67.9
+        "sma_50": 289.7,
+        "sma_200": 289.99,
+        "rsi_14": 39.5
       },
       "filings_identified": false
     },
     {
       "symbol": "XLF",
-      "close": 37.85,
-      "return_pct": -2.32,
-      "volume_multiple": 1.5,
+      "close": 38.77,
+      "return_pct": 0.05,
+      "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 39.09,
-        "sma_200": 37.37,
-        "rsi_14": 66.4
+        "sma_50": 39.75,
+        "sma_200": 39.98,
+        "rsi_14": 30.0
       },
       "filings_identified": false
     },
     {
       "symbol": "PXD",
-      "close": 238.42,
-      "return_pct": -3.0,
-      "volume_multiple": 1.4,
+      "close": 241.52,
+      "return_pct": -1.74,
+      "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 247.12,
-        "sma_200": 235.87,
-        "rsi_14": 44.3
+        "sma_50": 235.7,
+        "sma_200": 241.08,
+        "rsi_14": 39.8
       },
       "filings_identified": false
     },
     {
       "symbol": "GE",
-      "close": 171.5,
-      "return_pct": -2.14,
+      "close": 176.25,
+      "return_pct": 0.57,
       "volume_multiple": 1.3,
       "technicals": {
-        "sma_50": 170.62,
-        "sma_200": 169.3,
-        "rsi_14": 70.6
+        "sma_50": 171.7,
+        "sma_200": 162.2,
+        "rsi_14": 52.7
       },
-      "filings_identified": true
+      "filings_identified": false
     },
     {
       "symbol": "NVDA",
-      "close": 477.23,
-      "return_pct": -1.62,
-      "volume_multiple": 1.5,
+      "close": 478.38,
+      "return_pct": -1.38,
+      "volume_multiple": 1.4,
       "technicals": {
-        "sma_50": 489.1,
-        "sma_200": 500.76,
-        "rsi_14": 55.4
+        "sma_50": 492.67,
+        "sma_200": 511.98,
+        "rsi_14": 66.0
       },
       "filings_identified": false
     },
     {
       "symbol": "MS",
-      "close": 95.82,
-      "return_pct": 0.02,
-      "volume_multiple": 1.2,
+      "close": 92.94,
+      "return_pct": -2.98,
+      "volume_multiple": 1.5,
       "technicals": {
-        "sma_50": 98.5,
-        "sma_200": 100.51,
-        "rsi_14": 32.0
+        "sma_50": 93.18,
+        "sma_200": 97.16,
+        "rsi_14": 50.3
       },
       "filings_identified": false
     },
     {
       "symbol": "TMO",
-      "close": 578.98,
-      "return_pct": -1.06,
-      "volume_multiple": 1.4,
-      "technicals": {
-        "sma_50": 572.84,
-        "sma_200": 611.65,
-        "rsi_14": 66.6
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "COP",
-      "close": 107.95,
-      "return_pct": -0.51,
+      "close": 587.4,
+      "return_pct": 0.38,
       "volume_multiple": 1.2,
       "technicals": {
-        "sma_50": 108.77,
-        "sma_200": 118.47,
-        "rsi_14": 52.4
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "KO",
-      "close": 62.57,
-      "return_pct": 0.67,
-      "volume_multiple": 1.1,
-      "technicals": {
-        "sma_50": 63.75,
-        "sma_200": 56.7,
-        "rsi_14": 67.5
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "PG",
-      "close": 160.93,
-      "return_pct": 1.37,
-      "volume_multiple": 1.2,
-      "technicals": {
-        "sma_50": 159.14,
-        "sma_200": 157.2,
-        "rsi_14": 49.4
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "XLK",
-      "close": 192.69,
-      "return_pct": -1.44,
-      "volume_multiple": 1.4,
-      "technicals": {
-        "sma_50": 193.77,
-        "sma_200": 178.46,
-        "rsi_14": 73.1
-      },
-      "filings_identified": false
-    },
-    {
-      "symbol": "JPM",
-      "close": 199.11,
-      "return_pct": 0.18,
-      "volume_multiple": 1.3,
-      "technicals": {
-        "sma_50": 203.19,
-        "sma_200": 213.63,
-        "rsi_14": 28.1
+        "sma_50": 606.01,
+        "sma_200": 633.88,
+        "rsi_14": 58.3
       },
       "filings_identified": false
     }
   ],
   "evidence_items": [
     {
-      "event_id": "evt_economic_release_2026-04-24_1",
-      "source_name": "SyntheticWire",
-      "source_type": "news_wire_synthetic",
-      "published_ts": "2026-04-24T16:47:00Z",
-      "canonical_url": "synthetic://wire/2026-04-24/evt_economic_release_2026-04-24_1",
-      "excerpt": "BLS released PPI YoY: 224K (prior: 229K)",
-      "doc_id": "SYNTHETICWIRE-20260424-e71389a3",
-      "chunk_id": "evidence_economic_release_2026-04-24_e71389a3"
-    },
-    {
       "event_id": "evt_fed_speech_2026-04-24_2",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-04-24T18:04:00Z",
+      "published_ts": "2026-04-24T13:46:00Z",
       "canonical_url": "synthetic://wire/2026-04-24/evt_fed_speech_2026-04-24_2",
       "excerpt": "Quote: \"The current monetary policy stance is appropriate given economic conditions.\"",
       "doc_id": "SYNTHETICWIRE-20260424-4b3f5bde",
       "chunk_id": "evidence_fed_speech_2026-04-24_4b3f5bde"
     },
     {
+      "event_id": "evt_economic_release_2026-04-24_1",
+      "source_name": "SyntheticWire",
+      "source_type": "news_wire_synthetic",
+      "published_ts": "2026-04-24T14:47:00Z",
+      "canonical_url": "synthetic://wire/2026-04-24/evt_economic_release_2026-04-24_1",
+      "excerpt": "BLS released PPI YoY: 224K (prior: 229K)",
+      "doc_id": "SYNTHETICWIRE-20260424-e71389a3",
+      "chunk_id": "evidence_economic_release_2026-04-24_e71389a3"
+    },
+    {
       "event_id": "evt_fed_speech_2026-04-24_3",
       "source_name": "SyntheticWire",
       "source_type": "news_wire_synthetic",
-      "published_ts": "2026-04-24T20:06:00Z",
+      "published_ts": "2026-04-24T19:30:00Z",
       "canonical_url": "synthetic://wire/2026-04-24/evt_fed_speech_2026-04-24_3",
-      "excerpt": "Fed Chair delivered speech on monetary policy.",
+      "excerpt": "Venue: Brookings Institution.",
       "doc_id": "SYNTHETICWIRE-20260424-a307145b",
       "chunk_id": "evidence_fed_speech_2026-04-24_a307145b"
     }
