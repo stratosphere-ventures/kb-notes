@@ -45,7 +45,7 @@ sources_used:
 {% for idx in day.market_outcomes.indices %}
 - **{{ idx.symbol }}**: {{ "%.2f"|format(idx.close) }} ({{ "%+.2f"|format(idx.return_pct) }}%)
 {% if idx.low is defined and idx.high is defined %}
-- Range: {{ "%.2f"|format(idx.low) }} – {{ "%.2f"|format(idx.high) }}
+  - Range: {{ "%.2f"|format(idx.low) }} – {{ "%.2f"|format(idx.high) }}
 {% endif %}
 {% endfor %}
 
@@ -54,7 +54,7 @@ sources_used:
 - (none)
 {% else %}
 {% for r in day.market_outcomes.rates_fx_commodities %}
-- **{{ r.symbol }}**: {{ r.value }}{% if r.unit == "pct" %}%{% elif r.unit == "bps" %} bps{% elif r.unit == "usd" %} USD{% elif r.unit == "index" %}{% elif r.unit == "ratio" %}{% endif %}
+- **{{ r.symbol }}**: {{ r.value }}{% if r.unit == "pct" %}%{% elif r.unit == "bps" %} bps{% elif r.unit == "usd" %} USD{% elif r.unit == "index" %}{% endif %}
 {% if r.change_bps is defined %}
   - Change: {{ "%+g"|format(r.change_bps) }} bps
 {% elif r.symbol == "EURUSD" and r.change_abs is defined and r.change_pct is defined %}
@@ -107,32 +107,25 @@ sources_used:
 ## 3) Measured Market Reactions
 
 ### 3.1 Reaction Windows (grouped by event_id)
-
 {% set core = ["SPX","NDX","DJIA","RUT","VIX"] %}
 {% set allowed_windows = ["t0_to_t+5m","t0_to_t+30m","t0_to_t+60m","t0_to_close","pre_to_close"] %}
 {% set max_extras = 8 %}
 
 {% for e in (day.events | sort(attribute="published_ts")) %}
 #### Event {{ e.event_id }}
-
-{% set rows = (day.reaction_windows | selectattr("event_id","equalto",e.event_id) | list) %}
-
-{% set core_rows = rows | selectattr("instrument","in",core) | selectattr("window","in",allowed_windows) | list %}
-{% set extra_rows = rows | rejectattr("instrument","in",core) | selectattr("window","in",allowed_windows) | list %}
-
-{% if core_rows|length == 0 and extra_rows|length == 0 %}
+{% set rows = (day.reaction_windows | selectattr("event_id","equalto",e.event_id) | list) %}{% set core_rows = rows | selectattr("instrument","in",core) | selectattr("window","in",allowed_windows) | list %}{% set extra_rows = rows | rejectattr("instrument","in",core) | selectattr("window","in",allowed_windows) | list %}{% if core_rows|length == 0 and extra_rows|length == 0 %}
 - (no reaction windows recorded)
-{% else %}
-
-**Core instruments**
+{% else %}**Core instruments**
 {% for rw in core_rows %}
 - **{{ rw.instrument }}** — Window {{ rw.window }}: {% if rw.move_pts is defined %}{{ "%+.3f"|format(rw.move_pts) }} pts{% elif rw.move_pct is defined %}{{ "%+.3f"|format(rw.move_pct) }}%{% else %}{{ "%+.3f"|format(rw.move or 0) }}{% endif %}
+
 {% endfor %}
 
 {% if extra_rows|length > 0 %}
 **Additional instruments (capped)**
 {% for rw in extra_rows[:max_extras] %}
 - **{{ rw.instrument }}** — Window {{ rw.window }}: {% if rw.move_pts is defined %}{{ "%+.3f"|format(rw.move_pts) }} pts{% elif rw.move_pct is defined %}{{ "%+.3f"|format(rw.move_pct) }}%{% else %}{{ "%+.3f"|format(rw.move or 0) }}{% endif %}
+
 {% endfor %}
 {% endif %}
 
@@ -196,3 +189,4 @@ evidence_items:
     doc_id: {{ ev.doc_id }}
     chunk_id: {{ ev.chunk_id }}
 {% endfor %}
+```

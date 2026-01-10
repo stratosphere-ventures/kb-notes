@@ -119,7 +119,7 @@ def render_one(json_path: str, template_path: str, output_dir: str) -> Tuple[boo
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(template_dir),
             trim_blocks=True,
-            lstrip_blocks=True,
+            lstrip_blocks=False,
             undefined=jinja2.StrictUndefined,  # critical
         )
         template = env.get_template(template_name)
